@@ -6,45 +6,34 @@ export class UserController {
 
     private userRepository = AppDataSource.getRepository(User)
 
-    async all(request: Request, response: Response, next: NextFunction) {
+    async all() {
         return this.userRepository.find()
     }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        const id = parseInt(request.params.id)
-
+    async one(id:number) {
         const user = await this.userRepository.findOne({
             where: { id }
         })
 
         if (!user) {
-            return "unregistered user"
+            return "this user not exist"
         }
         return user
     }
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        const { email,
-            password,
-            username,
-            profileImgUrl,
-            status,
-            role } = request.body;
-
-        const user = this.userRepository.create({
-            email,
-            password,
-            username,
-            profileImgUrl,
-            status,
-            role
-        })
-
+    async add(user: User) {
         return this.userRepository.save(user)
     }
 
-    async remove(request: Request, response: Response, next: NextFunction) {
+    async update(request: Request, response: Response, next: NextFunction){
         const id = parseInt(request.params.id)
+        await this.userRepository.update(id,request.body).catch(err=>console.log(err))
+        return this.userRepository.findOne({
+            where: {id}
+        })
+    }
+
+    async remove(id:number) {
 
         let userToRemove = await this.userRepository.findOneBy({ id })
 
