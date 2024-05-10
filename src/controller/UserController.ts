@@ -1,5 +1,4 @@
 import { AppDataSource } from "../data-source"
-import { PersonalUser } from "../entity/PersonalUser"
 import { User } from "../entity/User"
 
 export class UserController {
@@ -15,21 +14,21 @@ export class UserController {
             where: { id }
         })
 
-        return !user ? new PersonalUser() || new User() : user
+        return !user ? new User() : user
     }
 
-    async add(user: PersonalUser|User) {
+    async add(user: User) {
         return this.userRepository.save(user)
     }
 
-    async update(id:number,user:PersonalUser|User){
+    async update(id:number,user:User){
         await this.userRepository.update(id,user).catch(err=>console.log(err))
         return this.userRepository.findOne({
             where: {id}
         })
     }
 
-    async remove(user: PersonalUser|User) {
+    async remove(user: User) {
         await this.userRepository.remove(user)
     }
 
