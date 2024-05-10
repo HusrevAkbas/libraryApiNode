@@ -1,5 +1,5 @@
 import { AppDataSource } from "../data-source"
-import { NextFunction, Request, Response } from "express"
+import { PersonalUser } from "../entity/PersonalUser"
 import { User } from "../entity/User"
 
 export class UserController {
@@ -15,34 +15,22 @@ export class UserController {
             where: { id }
         })
 
-        if (!user) {
-            return new User()
-        }
-        return user
+        return !user ? new PersonalUser() || new User() : user
     }
 
-    async add(user: User) {
+    async add(user: PersonalUser|User) {
         return this.userRepository.save(user)
     }
 
-    async update(id:number,user:User){
+    async update(id:number,user:PersonalUser|User){
         await this.userRepository.update(id,user).catch(err=>console.log(err))
         return this.userRepository.findOne({
             where: {id}
         })
     }
 
-    async remove(id:number) {
-
-        let userToRemove = await this.userRepository.findOneBy({ id })
-
-        if (!userToRemove) {
-            return "this user not exist"
-        }
-
-        await this.userRepository.remove(userToRemove)
-
-        return "user has been removed"
+    async remove(user: PersonalUser|User) {
+        await this.userRepository.remove(user)
     }
 
 }
