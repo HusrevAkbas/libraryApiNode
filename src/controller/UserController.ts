@@ -24,12 +24,20 @@ export class UserController {
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
-        const { firstName, lastName, age } = request.body;
+        const { email,
+            password,
+            username,
+            profileImgUrl,
+            status,
+            role } = request.body;
 
-        const user = Object.assign(new User(), {
-            firstName,
-            lastName,
-            age
+        const user = this.userRepository.create({
+            email,
+            password,
+            username,
+            profileImgUrl,
+            status,
+            role
         })
 
         return this.userRepository.save(user)

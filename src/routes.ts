@@ -1,15 +1,16 @@
 import { UserController } from "./controller/UserController"
+import { UserService } from "./service/UserService"
 
 export const Routes = [{
     method: "get",
     route: "/users",
-    controller: UserController,
-    action: "all"
+    controller: UserService,
+    action: "findAll"
 }, {
     method: "get",
     route: "/users/:id",
-    controller: UserController,
-    action: "one"
+    controller: UserService,
+    action: "findById"
 }, {
     method: "post",
     route: "/users",
