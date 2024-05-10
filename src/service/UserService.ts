@@ -11,11 +11,14 @@ export class UserService {
     async findById(req: Request, res:Response, next: NextFunction){
         
         const id = parseInt(req.params.id)
-        return this.userController.one(id)
-            .catch(err=>"Cannot find the user with id:" + err)
+        const user = await this.userController.one(id)
+        return user.id ? user : "cannot find the user with id: " + id
     }
     async update(req: Request, res:Response, next: NextFunction){
-        return this.userController.update(req,res,next)
+        const id = Number(req.params.id);
+        const user = await this.userController.one(id)
+        return user.id ? this.userController.update(id,user) : "User does not exist id: "+id
+        
     }
 
     async add(req: Request, res:Response, next: NextFunction){

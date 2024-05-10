@@ -16,7 +16,7 @@ export class UserController {
         })
 
         if (!user) {
-            return "this user not exist"
+            return new User()
         }
         return user
     }
@@ -25,9 +25,8 @@ export class UserController {
         return this.userRepository.save(user)
     }
 
-    async update(request: Request, response: Response, next: NextFunction){
-        const id = parseInt(request.params.id)
-        await this.userRepository.update(id,request.body).catch(err=>console.log(err))
+    async update(id:number,user:User){
+        await this.userRepository.update(id,user).catch(err=>console.log(err))
         return this.userRepository.findOne({
             where: {id}
         })
