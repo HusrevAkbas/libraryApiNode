@@ -1,5 +1,5 @@
 import { categoryRoutes } from "./routes/CategoryRoutes"
+import { libraryRoutes } from "./routes/LibraryRoutes"
 import { userRoutes } from "./routes/UserRoutes"
-import { UserService } from "./service/UserService"
 
-export const Routes = [...userRoutes,...categoryRoutes]
+export const Routes = [...userRoutes,...categoryRoutes, ...libraryRoutes]

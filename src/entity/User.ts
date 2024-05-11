@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, TableInheritance } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, TableInheritance, OneToMany } from "typeorm"
+import { Library } from "./Library"
 
 @Entity({name:"users"})
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -24,4 +25,7 @@ export class User {
 
     @Column()
     role: string
+
+    @OneToMany(()=>Library, (library)=>library.user, {eager:true})
+    library: Library[]
 }

@@ -25,14 +25,8 @@ export class CategoryController{
         })
     }
 
-    async remove(id: number) {
-        const categoryToRemove = await this.categoryRepository.findOneBy({id})
-
-        if(!categoryToRemove){
-            return "this category doesnt exist"
-        }
-        await this.categoryRepository.remove(categoryToRemove)
-        return "category has been removed"
+    async remove(category:Category) {
+        return await this.categoryRepository.remove(category)
     }
 
 }

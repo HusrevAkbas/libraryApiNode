@@ -11,13 +11,13 @@ export class UserService {
     async findById(req: Request, res:Response, next: NextFunction){        
         const id = parseInt(req.params.id)
         const user = await this.userController.one(id)
-        return user.id ? user : "cannot find the user with id: " + id
+        return user ? user : `user with id: ${id} does not exist`
     }
 
     async update(req: Request, res:Response, next: NextFunction){
         const id = Number(req.params.id);
         const user = await this.userController.one(id)
-        return user.id ? this.userController.update(id,req.body) : "User does not exist id: "+id        
+        return user.id ? this.userController.update(id,req.body) : `user with id: ${id} does not exist`        
     }
 
     async add(req: Request, res:Response, next: NextFunction){
@@ -28,6 +28,6 @@ export class UserService {
     async delete(req: Request, res:Response, next: NextFunction){
         const id = parseInt(req.params.id)
         const userToRemove = await this.userController.one(id)
-        return userToRemove.id ? await this.userController.remove(userToRemove) : "user does not exist id: "+id
+        return userToRemove.id ? await this.userController.remove(userToRemove) : `user with id: ${id} does not exist`
     }
 }

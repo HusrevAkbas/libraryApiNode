@@ -9,7 +9,7 @@ export class UserController {
         return this.userRepository.find()
     }
 
-    async one(id:number) {
+    async one(id: number) {
         const user = await this.userRepository.findOne({
             where: { id }
         })
@@ -18,18 +18,20 @@ export class UserController {
     }
 
     async add(user: User) {
-        return this.userRepository.save(user)
+        return await this.userRepository.save(user).catch(err => { 
+            return console.log(err)
+        })
     }
 
-    async update(id:number,user:User){
-        await this.userRepository.update(id,user).catch(err=>console.log(err))
+    async update(id: number, user: User) {
+        await this.userRepository.update(id, user).catch(err => console.log(err))
         return this.userRepository.findOne({
-            where: {id}
+            where: { id }
         })
     }
 
     async remove(user: User) {
-        await this.userRepository.remove(user)
+        return await this.userRepository.remove(user)
     }
 
 }

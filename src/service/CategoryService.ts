@@ -14,13 +14,13 @@ export class CategoryService {
 
         const id = parseInt(req.params.id)
         const category = await this.categoryController.one(id)
-        return category.id ? category : "category does not exist id: "+id
+        return category.id ? category : `Category with id: ${id} does not exist`
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
         const id = Number(req.params.id)
         const category = await this.categoryController.one(id)
-        return category.id ? this.categoryController.update(id,req.body) : "Category does not exist id: "+id
+        return category.id ? this.categoryController.update(id,req.body) : `Category with id: ${id} does not exist`
     }
 
     async add(req: Request, res: Response, next: NextFunction) {
@@ -30,7 +30,8 @@ export class CategoryService {
 
     async delete(req: Request, res: Response, next: NextFunction) {
         const id = parseInt(req.params.id)
-        return this.categoryController.remove(id)
+        const categoryToRemove = await this.categoryController.one(id)
+        return categoryToRemove ? await this.categoryController.remove(categoryToRemove) : `Category with id: ${id} does not exist`
     }
 }
 
