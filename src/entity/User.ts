@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, TableInheritance, OneToMany } f
 import { Library } from "./Library"
 
 @Entity({name:"users"})
-@TableInheritance({ column: { type: "varchar", name: "type" } })
+@TableInheritance({ column: { type: "varchar", name: "type", default: "PersonalUser" } })
 export class User {
     
     @PrimaryGeneratedColumn()

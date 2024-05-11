@@ -3,27 +3,27 @@ import { CategoryService } from "../service/CategoryService";
 export const categoryRoutes = [
     {
         method: "get",
-        route: "/category",
+        route: `/categories`,
         controller: CategoryService,
         action: "findAll"
     },{
         method: "get",
-        route: "/category/:id",
+        route: "/categories/:id",
         controller: CategoryService,
         action: "findById"
     }, {
         method: "post",
-        route: "/category",
+        route: "/categories",
         controller: CategoryService,
         action: "add"
     }, {
         method: "delete",
-        route: "/category/:id",
+        route: "/categories/:id",
         controller: CategoryService,
         action: "delete"
     }, {
         method: "put",
-        route: "/category/:id",
+        route: "/categories/:id",
         controller: CategoryService,
         action: "update"
     }
