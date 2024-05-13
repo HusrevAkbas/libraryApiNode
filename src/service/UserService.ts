@@ -8,10 +8,17 @@ export class UserService {
         return this.userController.all()
             .catch(err=>console.log("Error getting users"))
     }
+
     async findById(req: Request, res:Response, next: NextFunction){        
         const id = parseInt(req.params.id)
         const user = await this.userController.one(id)
-        return user ? user : `user with id: ${id} does not exist`
+        return user.id ? user : `user with id: ${id} does not exist`
+    }
+
+    async findByUsername(req: Request, res:Response, next: NextFunction){        
+        const username = req.query.username.toString()
+        const user = await this.userController.findByUsername(username)
+        return user.id ? user : `user with username: ${username} does not exist`
     }
 
     async update(req: Request, res:Response, next: NextFunction){
@@ -29,5 +36,11 @@ export class UserService {
         const id = parseInt(req.params.id)
         const userToRemove = await this.userController.one(id)
         return userToRemove.id ? await this.userController.remove(userToRemove) : `user with id: ${id} does not exist`
+    }
+
+    async isUser(req: Request, res:Response, next: NextFunction){        
+        const username = req.query.username.toString()
+        const user = await this.userController.findByUsername(username)
+        return user.id ? true : false
     }
 }

@@ -26,5 +26,15 @@ export const userRoutes = [
         route: "/users/:id",
         controller: UserService,
         action: "update"
+    }, {
+        method: "get",
+        route: "/user",
+        controller: UserService,
+        action: "findByUsername"
+    }, {
+        method: "get",
+        route: "/isuser",
+        controller: UserService,
+        action: "isUser"
     }
 ]

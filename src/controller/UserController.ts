@@ -17,6 +17,13 @@ export class UserController {
         return !user ? new User() : user
     }
 
+    async findByUsername(username: string) {
+        const user = await this.userRepository.findOne({
+            where: { username }
+        })
+
+        return !user ? new User() : user
+    }
     async add(user: User) {
         return await this.userRepository.save(user).catch(err => { 
             return console.log(err)
