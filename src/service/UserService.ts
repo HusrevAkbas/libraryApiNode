@@ -38,7 +38,7 @@ export class UserService {
         return userToRemove.id ? await this.userController.remove(userToRemove) : `user with id: ${id} does not exist`
     }
 
-    async isUser(req: Request, res:Response, next: NextFunction){        
+    async isUsernameExist(req: Request, res:Response, next: NextFunction){        
         const username = req.query.username.toString()
         const user = await this.userController.findByUsername(username)
         return user.id ? true : false

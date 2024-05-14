@@ -38,7 +38,7 @@ export class LibraryService {
         //set user to library
         const updatedLibrary = req.body
         updatedLibrary.user = user
-        return isLibrary ? await this.libraryController.update(id, req.body) : `library with ${id} does not exist`
+        return isLibrary.id ? await this.libraryController.update(id, updatedLibrary) : `library with ${id} does not exist`
     }
     
     async delete (req:Request, res:Response, next: NextFunction){

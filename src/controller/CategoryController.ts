@@ -15,7 +15,7 @@ export class CategoryController{
     }
 
     async add(category: Category) {
-        return await this. categoryRepository.save(category)
+        return await this.categoryRepository.save(category)
     }
 
     async update(id:number, category:Category) {
