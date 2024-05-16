@@ -10,13 +10,17 @@ export class LibraryService {
     private userController = new UserController()
 
     async findAll(req:Request, res:Response, next: NextFunction){
-        return this.libraryController.all().catch(err=>console.log(`error getting libraries: ${err}`));
+        this.libraryController.all().then(data=>{
+            res.send(data)
+        })
+        .catch(err=>console.log(`error getting libraries: ${err}`));
     }
 
     async findById(req:Request, res:Response, next: NextFunction){
         const id = Number(req.params.id)
-        const library = await this.libraryController.one(id);
-        return library.id ? library : `library with ${id} does not exist`
+        this.libraryController.one(id).then(data => {
+            data ? res.send(data) : res.send(`library with ${id} does not exist`)
+        }).catch(err=>res.send(err))
     }
 
     async add(req:Request, res:Response, next: NextFunction){
