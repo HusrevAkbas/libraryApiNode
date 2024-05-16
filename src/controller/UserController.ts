@@ -5,16 +5,14 @@ export class UserController {
 
     private userRepository = AppDataSource.getRepository(User)
 
-    async all() {
+    all() {
         return this.userRepository.find()
     }
 
-    async one(id: number) {
-        const user = await this.userRepository.findOne({
+    one(id: number) {
+        return this.userRepository.findOne({
             where: { id }
         })
-
-        return !user ? new User() : user
     }
 
     async findByUsername(username: string) {

@@ -24,9 +24,20 @@ export class LibraryService {
     }
 
     async add(req:Request, res:Response, next: NextFunction){
-        const userId = Number(req.body.user.id)
-        const user = await this.userController.one(userId)
-        return user ? this.libraryController.add(req.body) : `library must belong to an user. user with ${userId} does not exist`
+        const {body} = req
+        const errors = []
+        //check if request has all required fields
+        if(!Object.keys(body).includes('user')) errors.push(`library must belong to a user`)
+        if(!Object.keys(body).includes('name')) errors.push(`library must have a name`)
+        if(errors.length>0) return errors
+
+        //check if user exists
+        const userId = Number(body.user.id)
+        await this.userController.one(userId).then(data=>{
+            data ? this.libraryController.add(body).then(added=>{
+            res.send(added)
+        }) : res.send(`library must belong to a user. user with ${userId} does not exist`)
+        }).catch(err=>res.send(err))
     }
 
     async update(req:Request, res:Response, next: NextFunction){
