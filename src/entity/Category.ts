@@ -7,7 +7,7 @@ export class Category {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({nullable:false})
     name: string
 
     @Column()
@@ -16,7 +16,7 @@ export class Category {
     @Column()
     description: string
 
-    @Column()
+    @Column({default: true})
     status: boolean
 
     @ManyToMany(()=>Book, (book)=>book.categories)
