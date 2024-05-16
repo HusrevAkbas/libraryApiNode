@@ -39,4 +39,12 @@ export class UserController {
         return await this.userRepository.remove(user)
     }
 
+    metadata(){
+        const requiredFields=[]
+        this.userRepository.metadata.ownColumns.map((val,i,arr)=>{
+            if(val.isNullable===false && !val.default) requiredFields.push({isNullable: val.isNullable, default: val.default, path: val.propertyName, target: val.target})
+        })
+        return requiredFields
+    }
+
 }

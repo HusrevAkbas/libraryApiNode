@@ -17,6 +17,12 @@ export class BookService {
     }
 
     async findById(req: Request, res: Response, next: NextFunction){
+        
+        //HOW TO GET REQUIRED FIELDS WILL BE INJECTED AS UTILITY
+        console.log(this.bookController.metadata().map(val=> val.path))
+        /////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////
+
         const bookId = parseInt(req.params.id)
         const book = await this.bookController.one(bookId);
         return book.id ? book : `book with id: ${bookId} does not exist`

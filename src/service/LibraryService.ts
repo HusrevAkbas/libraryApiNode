@@ -33,10 +33,9 @@ export class LibraryService {
 
         //check if user exists
         const userId = Number(body.user.id)
-        await this.userController.one(userId).then(data=>{
-            data ? this.libraryController.add(body).then(added=>{
-            res.send(added)
-        }) : res.send(`library must belong to a user. user with ${userId} does not exist`)
+        this.userController.one(userId).then(data=>{
+            data ? this.libraryController.add(body).then(added=>res.send(added)) 
+            : res.send(`library must belong to a user. user with ${userId} does not exist`)
         }).catch(err=>res.send(err))
     }
 

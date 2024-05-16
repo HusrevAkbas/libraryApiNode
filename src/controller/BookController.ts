@@ -32,4 +32,11 @@ export class BookController {
     merge(bookToChange :Book, book :Book){
         return this.bookRepository.merge(bookToChange,book)
     }
+    metadata(){
+        const requiredFields=[]
+        this.bookRepository.metadata.ownColumns.map((val,i,arr)=>{
+            if(val.isNullable===false && !val.default) requiredFields.push({isNullable: val.isNullable, default: val.default, path: val.propertyName, target: val.target})
+        })
+        return requiredFields
+    }
 }
