@@ -3,12 +3,13 @@ import * as bodyParser from "body-parser"
 import { Request, Response } from "express"
 import { AppDataSource } from "./data-source"
 import { Routes } from "./routes"
-import { User } from "./entity/User"
 
 AppDataSource.initialize().then(async () => {
 
     // create express app
     const app = express()
+    const cors = require('cors')
+    app.use(cors)
     app.use(bodyParser.json())
 
     // register express routes from defined application routes
