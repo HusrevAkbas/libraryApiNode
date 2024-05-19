@@ -3,6 +3,7 @@ import { Book } from "../entity/Book";
 import { Category } from "../entity/Category";
 
 export class BookController {
+    constructor(){}
 
     private bookRepository = AppDataSource.getRepository(Book)
 
@@ -20,8 +21,8 @@ export class BookController {
         return this.bookRepository.save(book)
     }
 
-    update(id:number, book:Book){
-        return this.bookRepository.update(id,book)
+    update(book:Book){
+        return this.bookRepository.save(book)
     }
 
     remove(book:Book){

@@ -28,7 +28,7 @@ export class CategoryService {
 
     async update(req: Request, res: Response, next: NextFunction) {
         const id = Number(req.params.id)
-        let category;
+        let category:Category;
 
         await this.categoryController.one(id).then(oldcategory=>{
             category = oldcategory
@@ -57,7 +57,7 @@ export class CategoryService {
 
     async delete(req: Request, res: Response, next: NextFunction) {
         const id = parseInt(req.params.id)
-        let categoryToRemove
+        let categoryToRemove:Category
         await this.categoryController.one(id)
         .then((data)=>{
             data ? categoryToRemove = data : res.send(`Category with id: ${id} does not exist`)
