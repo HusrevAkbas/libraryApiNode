@@ -5,40 +5,31 @@ export class UserController {
 
     private userRepository = AppDataSource.getRepository(User)
 
-    async all() {
+    all() {
         return this.userRepository.find()
     }
 
-    async one(id: number) {
-        const user = await this.userRepository.findOne({
-            where: { id }
-        })
-
-        return !user ? new User() : user
-    }
-
-    async findByUsername(username: string) {
-        const user = await this.userRepository.findOne({
-            where: { username }
-        })
-
-        return !user ? new User() : user
-    }
-    async add(user: User) {
-        return await this.userRepository.save(user).catch(err => { 
-            return console.log(err)
-        })
-    }
-
-    async update(id: number, user: User) {
-        await this.userRepository.update(id, user).catch(err => console.log(err))
+    one(id: number) {
         return this.userRepository.findOne({
             where: { id }
         })
     }
 
-    async remove(user: User) {
-        return await this.userRepository.remove(user)
+    findByUsername(username: string) {
+        return this.userRepository.findOne({
+            where: { username }
+        })
+    }
+    add(user: User) {
+        return this.userRepository.save(user)
+    }
+
+    update(id: number, user: User) {
+        return this.userRepository.update(id, user)
+    }
+
+    remove(user: User) {
+        return this.userRepository.remove(user)
     }
 
 }

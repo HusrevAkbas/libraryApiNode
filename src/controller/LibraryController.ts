@@ -5,31 +5,27 @@ export class LibraryController {
 
     private libraryRepository = AppDataSource.getRepository(Library)
 
-    async all() {
+    all() {
         return this.libraryRepository.find();
     }
 
-    async one(id: number) {
-        const library = await this.libraryRepository.findOne({
+    one(id: number) {
+        return this.libraryRepository.findOne({
             where: { id },
             relations: { user: true }
         })
-        return library ? library : new Library()
     }
 
-    async add(library: Library) {
-        return await this.libraryRepository.save(library)
+    add(library: Library) {
+        return this.libraryRepository.save(library)
 
     }
 
-    async update(id: number, library: Library) {
-        await this.libraryRepository.update(id, library)
-        return await this.libraryRepository.findOne({
-            where: { id }
-        })
+    update(id: number, library: Library) {
+        return this.libraryRepository.update(id, library)
     }
 
-    async remove(library: Library) {
+    remove(library: Library) {
         return this.libraryRepository.remove(library)
     }
 

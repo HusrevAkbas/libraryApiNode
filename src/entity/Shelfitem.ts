@@ -12,13 +12,13 @@ export class Shelfitem {
     @Column({nullable: false})
     name: string
 
-    @Column()
+    @Column({nullable:true})
     imgUrl: string
 
-    @ManyToOne(()=>User, {eager:true})
+    @ManyToOne(()=>User, {nullable: false})
     user: User
 
-    @ManyToOne(()=>Library,{eager:true})
+    @ManyToOne(()=>Library,{nullable: false})
     library: Library
 
     @Column({default :true})

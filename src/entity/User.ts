@@ -18,13 +18,13 @@ export class User {
     @Column({nullable: false, unique: true})
     username: string
 
-    @Column()
+    @Column({nullable:true})
     profileImgUrl: string
 
     @Column({default: true})
     status: boolean
 
-    @Column()
+    @Column({default:"USER", nullable:true})
     role: string
 
     @OneToMany(()=>Library, (library)=>library.user)

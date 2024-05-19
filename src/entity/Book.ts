@@ -1,8 +1,8 @@
-import { PrimaryGeneratedColumn, Column, ChildEntity, ManyToMany, JoinTable } from "typeorm"
+import { Column, ChildEntity, ManyToMany, JoinTable } from "typeorm"
 import { Shelfitem } from "./Shelfitem"
 import { Category } from "./Category"
 
-@ChildEntity({name:"books"})
+@ChildEntity()
 export class Book extends Shelfitem {
 
     @Column()

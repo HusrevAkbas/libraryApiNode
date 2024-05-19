@@ -10,19 +10,33 @@ export class LibraryService {
     private userController = new UserController()
 
     async findAll(req:Request, res:Response, next: NextFunction){
-        return this.libraryController.all().catch(err=>console.log(`error getting libraries: ${err}`));
+        this.libraryController.all().then(data=>{
+            res.send(data)
+        })
+        .catch(err=>console.log(`error getting libraries: ${err}`));
     }
 
     async findById(req:Request, res:Response, next: NextFunction){
         const id = Number(req.params.id)
-        const library = await this.libraryController.one(id);
-        return library.id ? library : `library with ${id} does not exist`
+        this.libraryController.one(id).then(data => {
+            data ? res.send(data) : res.send(`library with ${id} does not exist`)
+        }).catch(err=>res.send(err))
     }
 
     async add(req:Request, res:Response, next: NextFunction){
-        const userId = Number(req.body.user.id)
-        const user = await this.userController.one(userId)
-        return user ? this.libraryController.add(req.body) : `library must belong to an user. user with ${userId} does not exist`
+        const {body} = req
+        const errors = []
+        //check if request has all required fields
+        if(!Object.keys(body).includes('user')) errors.push(`library must belong to a user`)
+        if(!Object.keys(body).includes('name')) errors.push(`library must have a name`)
+        if(errors.length>0) return errors
+
+        //check if user exists
+        const userId = Number(body.user.id)
+        this.userController.one(userId).then(data=>{
+            data ? this.libraryController.add(body).then(added=>res.send(added)) 
+            : res.send(`library must belong to a user. user with ${userId} does not exist`)
+        }).catch(err=>res.send(err))
     }
 
     async update(req:Request, res:Response, next: NextFunction){
