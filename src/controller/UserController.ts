@@ -20,6 +20,10 @@ export class UserController {
             where: { username }
         })
     }
+
+    findByEmail(email:string){
+        return this.userRepository.findOneBy({email})
+    }
     add(user: User) {
         return this.userRepository.save(user)
     }
