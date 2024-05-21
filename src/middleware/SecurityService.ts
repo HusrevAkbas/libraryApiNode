@@ -8,11 +8,12 @@ const securityService = (req: Request, res: Response, next: NextFunction) => {
         if(!req.headers.authorization) return res.json({message: "you need a token. please login"})
 
         const {authorization} = req.headers
-        const token = authorization.slice(7)
 
         if(!authorization.startsWith('Bearer ')) return res.json({message: "your token is invalid"})
 
+        const token = authorization.slice(7)
         const isTokenValid = jwt.verify(token, process.env.SECRET_KEY)
+
         next()
 
         } catch (err) {res.json({error: err.message})}        
