@@ -12,5 +12,11 @@ export const authenticationRoutes =[
         route: "/login",
         controller: AuthenticationService,
         action: "login"
+    },
+    {
+        method: "get",
+        route: "/showheaders",
+        controller: AuthenticationService,
+        action: "showHeaders"
     }
 ]

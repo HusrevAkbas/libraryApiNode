@@ -10,9 +10,10 @@ export class UserService {
     }
 
     async findById(req: Request, res:Response, next: NextFunction){        
-        const id = parseInt(req.params.id)
+        const id = parseInt(req.params.id)        
+        if(isNaN(id)) return "id parameter must be a number"
         const user = await this.userController.one(id)
-        return user.id ? user : `user with id: ${id} does not exist`
+        return user ? user : `user with id: ${id} does not exist`
     }
 
     async findByUsername(req: Request, res:Response, next: NextFunction){        
