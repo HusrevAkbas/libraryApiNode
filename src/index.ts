@@ -9,8 +9,10 @@ AppDataSource.initialize().then(async () => {
     // create express app
     const app = express()
     const cors = require('cors')
+    const security = require("./middleware/SecurityService")
     app.use(cors())
     app.use(bodyParser.json())
+    app.use(security)
 
     // register express routes from defined application routes
     Routes.forEach(route => {
@@ -54,3 +56,4 @@ AppDataSource.initialize().then(async () => {
     console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results")
 
 }).catch(error => console.log(error))
+

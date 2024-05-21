@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserController } from "../controller/UserController";
 import { User } from "../entity/User";
 import * as bcrypt from "bcrypt"
+import * as jwt from "jsonwebtoken"
 
 export class AuthenticationService{
     private userController = new UserController()
@@ -44,8 +45,13 @@ export class AuthenticationService{
         if(!doesPasswordMatch){
             //compare password
             return "password does not match"
-        } else {            
-            return {token : "BCRYPT AND JWT TOKEN WILL BE ADDED"}
         }
+
+        const accessToken = jwt.sign({
+            username: user.username,
+            email: user.email
+        }, process.env.SECRET_KEY,{expiresIn:"24h"})
+
+        return {token : accessToken}
     }
 }
