@@ -50,7 +50,7 @@ export class AuthenticationService{
         const accessToken = jwt.sign({
             username: user.username,
             email: user.email
-        }, process.env.SECRET_KEY,{expiresIn:"24h"})
+        }, process.env.SECRET_KEY,{expiresIn:"10h"})
 
         return {token : accessToken}
     }
