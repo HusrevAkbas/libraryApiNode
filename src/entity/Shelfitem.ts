@@ -15,10 +15,10 @@ export class Shelfitem {
     @Column({nullable:true})
     imgUrl: string
 
-    @ManyToOne(()=>User, {nullable: false})
+    @ManyToOne(()=>User, {nullable: false, onDelete:"CASCADE"})
     user: User
 
-    @ManyToOne(()=>Library,{nullable: false})
+    @ManyToOne(()=>Library,{nullable: false, onDelete: "NO ACTION"})
     library: Library
 
     @Column({default :true})

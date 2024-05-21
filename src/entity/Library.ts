@@ -8,7 +8,7 @@ export class Library {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(()=>User,(user)=>user.library)
+    @ManyToOne(()=>User,(user)=>user.library, {onDelete: "NO ACTION"})
     user: User
 
     @Column()

@@ -2,8 +2,12 @@ import { AppDataSource } from "../data-source"
 import { User } from "../entity/User"
 
 export class UserController {
-
     private userRepository = AppDataSource.getRepository(User)
+    
+    create(body: User) {
+        return this.userRepository.create(body)
+    }
+
 
     all() {
         return this.userRepository.find()

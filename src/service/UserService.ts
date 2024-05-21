@@ -27,20 +27,22 @@ export class UserService {
         return user.id ? this.userController.update(id,req.body) : `user with id: ${id} does not exist`        
     }
 
-    async add(req: Request, res:Response, next: NextFunction){
-        const user = req.body
-        return this.userController.add(user).catch(err=>console.log(err))
-    }
+    //use register() in Authentication instead
+    // async add(req: Request, res:Response, next: NextFunction){
+    //     const user = req.body
+    //     return this.userController.add(user).catch(err=>console.log(err))
+    // }
 
     async delete(req: Request, res:Response, next: NextFunction){
         const id = parseInt(req.params.id)
+        if(isNaN(id)) return "id parameter must be a number"
         const userToRemove = await this.userController.one(id)
-        return userToRemove.id ? await this.userController.remove(userToRemove) : `user with id: ${id} does not exist`
+        return userToRemove ? await this.userController.remove(userToRemove) : `user with id: ${id} does not exist`
     }
 
     async isUsernameExist(req: Request, res:Response, next: NextFunction){        
         const username = req.query.username.toString()
         const user = await this.userController.findByUsername(username)
-        return user.id ? true : false
+        return user ? true : false
     }
 }

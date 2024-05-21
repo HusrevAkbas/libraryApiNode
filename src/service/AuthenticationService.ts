@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { LoginForm } from "../DTO/LoginForm";
 import { UserController } from "../controller/UserController";
 import { User } from "../entity/User";
+import * as bcrypt from "bcrypt"
 
 export class AuthenticationService{
     private userController = new UserController()
@@ -22,7 +22,9 @@ export class AuthenticationService{
                 return "email is already in use"
             }
 
-            const addedUser = await this.userController.add(req.body)
+            const userToAdd: User = this.userController.create(req.body)
+
+            const addedUser = await this.userController.add(userToAdd)
             if(!addedUser){
                 return "User could not registered"
             } else {
@@ -36,7 +38,10 @@ export class AuthenticationService{
 
         if(!user) {
             return "user does not exist"
-        } else if(user.password !== req.body.password){
+        } 
+        const doesPasswordMatch = await bcrypt.compare(req.body.password, user.password)
+
+        if(!doesPasswordMatch){
             //compare password
             return "password does not match"
         } else {            
