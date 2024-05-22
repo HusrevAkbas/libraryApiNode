@@ -36,5 +36,10 @@ export const userRoutes = [
         route: "/isuser",
         controller: UserService,
         action: "isUsernameExist"
+    }, {
+        method: "get",
+        route: "/isemail",
+        controller: UserService,
+        action: "isEmailExist"
     }
 ]

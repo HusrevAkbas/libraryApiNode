@@ -46,4 +46,10 @@ export class UserService {
         const user = await this.userController.findByUsername(username)
         return user ? true : false
     }
+
+    async isEmailExist(req: Request, res:Response, next: NextFunction){        
+        const email = req.query.email.toString()
+        const user = await this.userController.findByEmail(email)
+        return user ? true : false
+    }
 }

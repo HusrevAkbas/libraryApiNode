@@ -4,7 +4,7 @@ import * as jwt from "jsonwebtoken"
 const securityService = (req: Request, res: Response, next: NextFunction) => {
         try {
         const {path} = req
-        if(path == '/register' || path == '/login') return next()
+        if(path == '/register' || path == '/login' || path == '/isuser' || path=='/isemail') return next()
         if(!req.headers.authorization) return res.json({message: "you need a token. please login"})
 
         const {authorization} = req.headers
