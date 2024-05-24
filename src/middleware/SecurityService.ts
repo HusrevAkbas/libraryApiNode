@@ -4,8 +4,10 @@ import * as jwt from "jsonwebtoken"
 const securityService = (req: Request, res: Response, next: NextFunction) => {
         try {
         const {path} = req
-        if(path == '/register' || path == '/login' || path == '/isuser' || path=='/isemail') return next()
-        if(!req.headers.authorization) return res.json({message: "you need a token. please login"})
+        if(path == '/register' || path == '/login' || path == '/isuser' || path=='/isemail') {
+                return next()
+        }
+        if(!req.headers.authorization) return {message: "you need a token. please login"}
 
         const {authorization} = req.headers
 
@@ -16,7 +18,7 @@ const securityService = (req: Request, res: Response, next: NextFunction) => {
 
         next()
 
-        } catch (err) {res.json({error: err.message})}        
+        } catch (err) {return {error: err.message}}
 }
 
 module.exports = securityService

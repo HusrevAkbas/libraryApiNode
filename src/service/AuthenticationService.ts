@@ -35,24 +35,32 @@ export class AuthenticationService{
     }
 
     async login (req: Request, res: Response, next: NextFunction){
-        const user = await this.userController.findByUsername(req.body.username)
+
+        const {username, password} = req.body
+        const user = await this.userController.findByUsername(username)
 
         if(!user) {
-            return "user does not exist"
+            return {success: false,message: "username or password is wrong. please check your credentials"}
         } 
-        const doesPasswordMatch = await bcrypt.compare(req.body.password, user.password)
+
+        //compare password
+        const doesPasswordMatch = await bcrypt.compare(password, user.password)
 
         if(!doesPasswordMatch){
-            //compare password
-            return "password does not match"
+            return {success: false,message: "username or password is wrong. please check your credentials"}
+            
         }
 
         const accessToken = jwt.sign({
             username: user.username,
             email: user.email
-        }, process.env.SECRET_KEY,{expiresIn:"10h"})
+        }, process.env.SECRET_KEY,{expiresIn:"10d"})
 
-        return {token : accessToken}
+        //User DTO will be configured
+        delete user.password
+
+        return {user: user, token : accessToken, success: true}
+        
     }
 
     async showHeaders(req: Request, res: Response, next: NextFunction){

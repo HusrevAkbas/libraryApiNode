@@ -12,11 +12,6 @@ export const userRoutes = [
         controller: UserService,
         action: "findById"
     }, {
-        method: "post",
-        route: "/users",
-        controller: UserService,
-        action: "add"
-    }, {
         method: "delete",
         route: "/users/:id",
         controller: UserService,
