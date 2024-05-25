@@ -18,7 +18,7 @@ const securityService = (req: Request, res: Response, next: NextFunction) => {
 
         next()
 
-        } catch (err) {return {error: err.message}}
+        } catch (err) {return {success: false, message: err.message}}
 }
 
 module.exports = securityService

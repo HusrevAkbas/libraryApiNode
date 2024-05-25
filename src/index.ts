@@ -10,23 +10,32 @@ AppDataSource.initialize().then(async () => {
     const app = express()
     const cors = require('cors')
     const security = require("./middleware/SecurityService")
+    const errorHandler = require("./middleware/ErrorHandler")
+
     app.use(cors())
     app.use(bodyParser.json())
     app.use(security)
+    
+    const asyncHandler = fn => (req,res,next) => {
+        console.log("asyncHandler at work")
+        Promise.resolve(fn(req,res,next)).catch(next)
+    }
 
     // register express routes from defined application routes
     Routes.forEach(route => {
-        (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-            const result = (new (route.controller as any))[route.action](req, res, next)
+        (app as any)[route.method](route.route, asyncHandler(async (req: Request, res: Response, next: Function) => {
+            const result = await (new (route.controller as any))[route.action](req, res, next)
             if (result instanceof Promise) {
                 result.then(result => result !== null && result !== undefined ? res.send(result) : undefined)
 
             } else if (result !== null && result !== undefined) {
                 res.json(result)
             }
-        })
+        }))
     })
 
+
+    app.use(errorHandler)
     // setup express app here
     // ...
 
