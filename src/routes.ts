@@ -1,4 +1,3 @@
-import { authenticationRoutes } from "./routes/AuthenticationRoutes"
 import { bookRoutes } from "./routes/BookRoutes"
 import { categoryRoutes } from "./routes/CategoryRoutes"
 import { libraryRoutes } from "./routes/LibraryRoutes"
@@ -10,4 +9,4 @@ export const Routes = [{
     route: "/",
     controller: MainService,
     action: "urlpathlist"
-}, ...userRoutes, ...categoryRoutes, ...libraryRoutes, ...bookRoutes, ...authenticationRoutes]
+}, ...userRoutes, ...categoryRoutes, ...libraryRoutes, ...bookRoutes]

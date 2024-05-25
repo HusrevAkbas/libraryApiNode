@@ -6,7 +6,7 @@ export const userRoutes = [
         route: "/users",
         controller: UserService,
         action: "findAll"
-    },{
+    }, {
         method: "get",
         route: "/users/:id",
         controller: UserService,
@@ -36,5 +36,20 @@ export const userRoutes = [
         route: "/isemail",
         controller: UserService,
         action: "isEmailExist"
+    }, {
+        method: "post",
+        route: "/register",
+        controller: UserService,
+        action: "register"
+    }, {
+        method: "post",
+        route: "/login",
+        controller: UserService,
+        action: "login"
+    }, {
+        method: "get",
+        route: "/showheaders",
+        controller: UserService,
+        action: "showHeaders"
     }
 ]

@@ -11,13 +11,14 @@ AppDataSource.initialize().then(async () => {
     const cors = require('cors')
     const security = require("./middleware/SecurityService")
     const errorHandler = require("./middleware/ErrorHandler")
+    const checkRequiredFormFields = require("./middleware/CheckRequired")
 
     app.use(cors())
     app.use(bodyParser.json())
     app.use(security)
+    app.use(checkRequiredFormFields)
     
-    const asyncHandler = fn => (req,res,next) => {
-        console.log("asyncHandler at work")
+    const asyncHandler = fn => (req: Request,res:Response,next) => {
         Promise.resolve(fn(req,res,next)).catch(next)
     }
 
