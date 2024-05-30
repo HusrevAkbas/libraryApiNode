@@ -6,7 +6,7 @@ const checkRequired = (req:Request,res: Response ,next: NextFunction)=>{
     const{path,method} = req
     const newpath = path.split('/')[1]
 
-    if(req.path == '/login'){
+    if(req.path == '/login' || path == '/file'){
         next()
         return
     }

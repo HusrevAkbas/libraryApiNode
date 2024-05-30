@@ -37,8 +37,8 @@ export class User extends EntityBasics {
         this.password = await bcrypt.hash(this.password, 10)
     }
 
-    @BeforeInsert()
-    async setName (){
-        this.name = this.username
-    }
+    // @BeforeInsert()
+    // async setName (){
+    //     this.name = this.username
+    // }
 }
