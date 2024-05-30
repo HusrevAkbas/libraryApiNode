@@ -1,23 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm"
 import { Book } from "./Book"
+import { EntityBasics } from "./Entity"
 
 @Entity({name:"categories"})
-export class Category {
-
-    @PrimaryGeneratedColumn()
-    id: number
-
-    @Column({nullable:false})
-    name: string
-
-    @Column()
-    imgUrl: string
+export class Category extends EntityBasics {
 
     @Column()
     description: string
-
-    @Column({default: true})
-    status: boolean
 
     @ManyToMany(()=>Book, (book)=>book.categories)
     books: Book[]

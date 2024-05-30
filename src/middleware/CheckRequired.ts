@@ -5,8 +5,6 @@ import { AppDataSource } from "../data-source"
 const checkRequired = (req:Request,res: Response ,next: NextFunction)=>{
     const{path,method} = req
     const newpath = path.split('/')[1]
-    console.log(method.concat(newpath))
-    console.log(method ==('POST' || 'PUT'))
 
     if(req.path == '/login'){
         next()

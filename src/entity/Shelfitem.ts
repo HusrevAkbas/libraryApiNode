@@ -1,26 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, TableInheritance, ManyToOne } from "typeorm"
 import { User } from "./User"
 import { Library } from "./Library"
+import { EntityBasics } from "./Entity"
 
 @Entity({name:"shelfitems"})
 @TableInheritance({ column: { type: "varchar", name: "type", default: "Book" } })
-export class Shelfitem {
+export class Shelfitem extends EntityBasics {
 
-    @PrimaryGeneratedColumn()
-    id: number
-
-    @Column({nullable: false})
-    name: string
-
-    @Column({nullable:true})
-    imgUrl: string
-
-    @ManyToOne(()=>User, {nullable: false, onDelete:"CASCADE"})
+    @ManyToOne(()=>User, {nullable: false, onDelete:"NO ACTION"})
     user: User
 
     @ManyToOne(()=>Library,{nullable: false, onDelete: "NO ACTION"})
     library: Library
-
-    @Column({default :true})
-    status: boolean
 }

@@ -1,27 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, TableInheritance, ManyToOne } from "typeorm"
 import { User } from "./User"
+import { EntityBasics } from "./Entity"
 
 @Entity({name:"libraries"})
-@TableInheritance({ column: { type: "varchar", name: "type" } })
-export class Library {
-    
-    @PrimaryGeneratedColumn()
-    id: number
+export class Library extends EntityBasics {
 
     @ManyToOne(()=>User,(user)=>user.library, {onDelete: "NO ACTION"})
     user: User
 
     @Column()
-    name: string
-
-    @Column()
     adress: string
-
-    @Column()
-    imgUrl: string
-
-    @Column()
-    status: boolean
 
     @Column()
     visibility: string

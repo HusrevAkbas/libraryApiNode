@@ -9,7 +9,7 @@ export class UserService {
 
     async findAll(req: Request, res:Response, next: NextFunction){
         return this.userController.all()
-            .catch(err=>console.log("Error getting users"))
+            .catch(err=>{return ("Error getting users")})
     }
 
     async findById(req: Request, res:Response, next: NextFunction){        
