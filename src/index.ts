@@ -17,8 +17,8 @@ AppDataSource.initialize().then(async () => {
     app.use(cors())
     app.use(bodyParser.json())
     app.use(multer)
-    app.use(security)
-    app.use(checkRequiredFormFields)
+    //app.use(security)
+    //app.use(checkRequiredFormFields)
     
     const asyncHandler = fn => (req: Request,res:Response,next) => {
         Promise.resolve(fn(req,res,next)).catch(next)
