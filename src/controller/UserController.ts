@@ -32,12 +32,20 @@ export class UserController {
         return this.userRepository.save(user)
     }
 
-    update(id: number, user: User) {
-        return this.userRepository.update(id, user)
+    update(user: User) {
+        return this.userRepository.save(user)
     }
 
     remove(user: User) {
         return this.userRepository.remove(user)
+    }
+
+    merge(userToUpdate:User, newUser:User){
+        return this.userRepository.merge(userToUpdate, newUser)
+    }
+    
+    preload(newUser: User){
+        return this.userRepository.preload(newUser)
     }
 
 }

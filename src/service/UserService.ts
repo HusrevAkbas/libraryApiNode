@@ -28,7 +28,8 @@ export class UserService {
     async update(req: Request, res:Response, next: NextFunction){
         const id = Number(req.params.id);
         const user = await this.userController.one(id)
-        return user ? this.userController.update(id,req.body) : `user with id: ${id} does not exist`        
+        const newUser = await this.userController.preload(req.body)
+        return newUser ? this.userController.update(newUser) : `user with id: ${id} does not exist`        
     }
 
     //use register() instead
