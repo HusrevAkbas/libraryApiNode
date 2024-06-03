@@ -13,7 +13,9 @@ export class BookController {
 
     one(id:number) {
         return this.bookRepository.findOne({
-            where: {id}
+            where: {id},
+            relations: {categories:true, user:true},
+            relationLoadStrategy:"join"
         })    
     }
 
@@ -31,5 +33,9 @@ export class BookController {
 
     merge(bookToChange :Book, book :Book){
         return this.bookRepository.merge(bookToChange,book)
+    }
+
+    preload(book: Book){
+        return this.bookRepository.preload(book)
     }
 }

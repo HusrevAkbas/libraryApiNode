@@ -27,21 +27,11 @@ export class CategoryService {
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
-        const id = Number(req.params.id)
-        let category:Category;
 
-        await this.categoryController.one(id).then(oldcategory=>{
-            category = oldcategory
-        }).catch(err=>res.send(`category couldnt found id: ${id}`))
+        const categoryToChange = await this.categoryController.preload(req.body)
+        if(!categoryToChange) return {success: false, message: 'category does not exist'}
 
-        await this.categoryController.update(category.id,req.body)
-        .catch(err=>{
-            res.send(`category couldnt updated ${err}`)
-        })
-
-        this.categoryController.one(id).then(data =>{
-            res.send(data)
-        }).catch(err=>res.send(err))
+        return this.categoryController.add(categoryToChange)
     }
 
     async add(req: Request, res: Response, next: NextFunction) {

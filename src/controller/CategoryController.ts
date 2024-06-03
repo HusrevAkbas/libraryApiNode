@@ -25,4 +25,12 @@ export class CategoryController{
         return this.categoryRepository.remove(category)
     }
 
+    merge(category :Category,category2 :Category){
+        return this.categoryRepository.merge(category, category2)
+    }
+
+    preload(category: Category){
+        return this.categoryRepository.preload(category)
+    }
+
 }

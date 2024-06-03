@@ -56,9 +56,6 @@ export class UserService {
         const user = await this.userController.findByEmail(email)
         return user ? true : false
     }
-    
-
-    //BCRYPT AND JWT TOKEN WILL BE ADDED
 
     async register(req: Request, res: Response, next: NextFunction) {
         try {

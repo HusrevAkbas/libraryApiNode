@@ -28,6 +28,7 @@ export class UserController {
     findByEmail(email:string){
         return this.userRepository.findOneBy({email})
     }
+
     add(user: User) {
         return this.userRepository.save(user)
     }
@@ -40,12 +41,12 @@ export class UserController {
         return this.userRepository.remove(user)
     }
 
-    merge(userToUpdate:User, newUser:User){
-        return this.userRepository.merge(userToUpdate, newUser)
+    merge(user:User, user2:User){
+        return this.userRepository.merge(user, user2)
     }
     
-    preload(newUser: User){
-        return this.userRepository.preload(newUser)
+    preload(user: User){
+        return this.userRepository.preload(user)
     }
 
 }
