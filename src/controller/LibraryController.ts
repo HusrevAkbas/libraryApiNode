@@ -11,14 +11,18 @@ export class LibraryController {
 
     one(id: number) {
         return this.libraryRepository.findOne({
-            where: { id },
-            relations: { user: true }
+            where: { id }
+        })
+    }
+
+    findByUserId(id: number){
+        return this.libraryRepository.find({
+            where: {user:{id}}
         })
     }
 
     save(library: Library) {
         return this.libraryRepository.save(library)
-
     }
 
     update(id: number, library: Library) {

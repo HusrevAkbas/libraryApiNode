@@ -21,6 +21,12 @@ export class LibraryService {
         }).catch(err=>res.send(err))
     }
 
+    async findByUserId(req:Request, res:Response, next: NextFunction){
+        const id = parseInt(req.params.id)
+        const library = await this.libraryController.findByUserId(id)
+        return library.length > 0 ?  library : {success: false, message: 'could not found library'}
+    }
+
     async add(req:Request, res:Response, next: NextFunction){
         const {body} = req
         const errors = []
