@@ -35,24 +35,27 @@ const checkRequired = (req:Request,res: Response ,next: NextFunction)=>{
     
 }
 
-function getClassName(path){    
+function getClassName(path:string){    
     const routes = Routes.filter(route => {
         if(route.route == path) return route
     })
     return routes[0].controller.name.replace('Service','')
 }
 
-function getMappedMetadata(className){
+function getMappedMetadata(className: string){
         return AppDataSource.getMetadata(className).ownColumns.map(column=>{
-        return {isNullable: column.isNullable,
-        default: column.default,
-        propertyName: column.propertyName,
-        databasePath:column.databasePath,
-        referencedColumn:column.referencedColumn,
-        target:column.target}
-    }).filter(item=>{
-        return item.isNullable == false && item.default == undefined && item.propertyName !== 'id'
-    })
+            return {isNullable: column.isNullable,
+            default: column.default,
+            propertyName: column.propertyName,
+            databasePath:column.databasePath,
+            referencedColumn:column.referencedColumn,
+            target:column.target}
+        }).filter(item=>{
+            return item.isNullable == false && item.default == undefined && item.propertyName !== 'id'
+        })
+        .filter(item=>{
+            if(!(className == 'User' && item.propertyName == 'name')) return item
+        })
 
 }
 

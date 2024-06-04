@@ -11,6 +11,6 @@ export class Library extends EntityBasics {
     @Column()
     adress: string
 
-    @Column()
+    @Column({default: 'public'})
     visibility: string
 }

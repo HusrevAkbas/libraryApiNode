@@ -3,9 +3,13 @@ import { UserController } from "../controller/UserController";
 import * as bcrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import { User } from "../entity/User";
+import { ErrorResult } from "../utility/result/ErrorResult";
+import { Library } from "../entity/Library";
+import { LibraryController } from "../controller/LibraryController";
 
 export class UserService {
-    private userController = new UserController();
+    private userController = new UserController()
+    private libraryController = new LibraryController()
 
     async findAll(req: Request, res:Response, next: NextFunction){
         return this.userController.all()
@@ -58,28 +62,35 @@ export class UserService {
     }
 
     async register(req: Request, res: Response, next: NextFunction) {
-        try {
             let user = await this.userController.findByUsername(req.body.username)
 
             if(user){
-                return "Username is already in use"
+                return new ErrorResult("Username is already in use")
             }
 
             user = await this.userController.findByEmail(req.body.email)
 
             if(user){
-                return "email is already in use"
+                return new ErrorResult("email is already in use")
             }
 
             const userToAdd: User = this.userController.create(req.body)
 
             const addedUser = await this.userController.add(userToAdd)
+
             if(!addedUser){
                 return "User could not registered"
             } else {
-                res.send(addedUser)
+
+                const library = new Library()
+                library.name = `${userToAdd.username}'s Library`
+                library.user = addedUser
+                library.adress = 'my adress'
+
+                await this.libraryController.save(library)
+
+                return addedUser
             }
-        } catch(err) {res.send(err.message) }
     }
 
     async login (req: Request, res: Response, next: NextFunction){

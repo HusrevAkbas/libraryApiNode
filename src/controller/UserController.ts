@@ -8,7 +8,6 @@ export class UserController {
         return this.userRepository.create(body)
     }
 
-
     all() {
         return this.userRepository.find()
     }
