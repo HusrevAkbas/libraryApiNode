@@ -3,6 +3,7 @@ import { Library } from "./Library"
 import { Shelfitem } from "./Shelfitem"
 import * as bcrypt from "bcrypt"
 import { EntityBasics } from "./Entity"
+import { Adress } from "./Adress"
 
 @Entity({name:"users"})
 @TableInheritance({ column: { type: "varchar", name: "type", default: "PersonalUser" } })
@@ -27,18 +28,16 @@ export class User extends EntityBasics {
     role: string
 
     @OneToMany(()=>Library, (library)=>library.user, {eager:true})
-    library: Library[]
+    libraries: Library[]
 
     @OneToMany(()=>Shelfitem, (shelfitem)=>shelfitem.user, {eager: true})
     shelfitem: Shelfitem[]
 
+    @OneToMany(()=>Adress, (adress)=>adress.user,{nullable:true})
+    adresses: Adress[]
+
     @BeforeInsert()
     async hashPassword (){
         this.password = await bcrypt.hash(this.password, 10)
-    }
-
-    @BeforeInsert()
-    async setName (){
-        this.name = this.username
     }
 }

@@ -5,9 +5,6 @@ export abstract class EntityBasics extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({nullable:false, unique: true})
-    name: string
-
     @Column({nullable: true})
     imgUrl: string
 

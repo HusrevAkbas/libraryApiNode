@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { BookController } from "../controller/BookController";
+import { BookRepository } from "../repository/BookRepository";
 import { Book } from "../entity/Book";
-import { UserController } from "../controller/UserController";
-import { LibraryController } from "../controller/LibraryController";
-import { CategoryController } from "../controller/CategoryController";
+import { UserRepository } from "../repository/UserRepository";
+import { LibraryRepository } from "../repository/LibraryRepository";
+import { CategoryRepository } from "../repository/CategoryRepository";
 
 export class BookService {
 
-    private bookController = new BookController()
-    private userController = new UserController()
-    private libraryController = new LibraryController()
-    private categoryController = new CategoryController()
+    private bookController = new BookRepository()
+    private userController = new UserRepository()
+    private libraryController = new LibraryRepository()
+    private categoryController = new CategoryRepository()
 
     async findAll(req: Request, res: Response, next: NextFunction){
         this.bookController.find().then(data=>{

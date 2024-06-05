@@ -1,7 +1,7 @@
 import { AppDataSource } from "../data-source"
 import { User } from "../entity/User"
 
-export class UserController {
+export class UserRepository {
     private userRepository = AppDataSource.getRepository(User)
     
     create(body: User) {

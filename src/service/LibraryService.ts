@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { LibraryController } from "../controller/LibraryController";
-import { UserController } from "../controller/UserController";
+import { LibraryRepository } from "../repository/LibraryRepository";
+import { UserRepository } from "../repository/UserRepository";
 
 export class LibraryService {
 
-    private libraryController = new LibraryController()
-    private userController = new UserController()
+    private libraryController = new LibraryRepository()
+    private userController = new UserRepository()
 
     async findAll(req:Request, res:Response, next: NextFunction){
         this.libraryController.all().then(data=>{

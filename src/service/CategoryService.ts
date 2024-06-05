@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { CategoryController } from "../controller/CategoryController"
+import { CategoryRepository } from "../repository/CategoryRepository"
 import { Category } from "../entity/Category";
 
 export class CategoryService {
 
-    private categoryController = new CategoryController();
+    private categoryController = new CategoryRepository();
 
     async findAll(req: Request, res: Response, next: NextFunction) {
         this.categoryController.all()

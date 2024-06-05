@@ -1,7 +1,7 @@
 import { AppDataSource } from "../data-source";
 import { Category } from "../entity/Category";
 
-export class CategoryController{
+export class CategoryRepository{
 
     private categoryRepository = AppDataSource.getRepository(Category)
     

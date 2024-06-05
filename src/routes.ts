@@ -1,3 +1,4 @@
+import { adressRoutes } from "./routes/AdressRoutes"
 import { bookRoutes } from "./routes/BookRoutes"
 import { categoryRoutes } from "./routes/CategoryRoutes"
 import { libraryRoutes } from "./routes/LibraryRoutes"
@@ -15,4 +16,4 @@ export const Routes = [{
     route: "/file",
     controller: ImageService,
     action: "add"
-},...userRoutes, ...categoryRoutes, ...libraryRoutes, ...bookRoutes]
+}, ...userRoutes, ...categoryRoutes, ...libraryRoutes, ...bookRoutes, ...adressRoutes]

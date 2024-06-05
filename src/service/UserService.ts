@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { UserController } from "../controller/UserController";
+import { UserRepository } from "../repository/UserRepository";
 import * as bcrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import { User } from "../entity/User";
 import { ErrorResult } from "../utility/result/ErrorResult";
 import { Library } from "../entity/Library";
-import { LibraryController } from "../controller/LibraryController";
+import { LibraryRepository } from "../repository/LibraryRepository";
 
 export class UserService {
-    private userController = new UserController()
-    private libraryController = new LibraryController()
+    private userController = new UserRepository()
+    private libraryController = new LibraryRepository()
 
     async findAll(req: Request, res:Response, next: NextFunction){
         return this.userController.all()
@@ -85,7 +85,6 @@ export class UserService {
                 const library = new Library()
                 library.name = `${userToAdd.username}'s Library`
                 library.user = addedUser
-                library.adress = 'my adress'
 
                 await this.libraryController.save(library)
 
@@ -97,17 +96,15 @@ export class UserService {
 
         const {username, password} = req.body
         const user = await this.userController.findByUsername(username)
-
         if(!user) {
-            return {success: false,message: "username or password is wrong. please check your credentials"}
+            return new ErrorResult("username or password is wrong. please check your credentials")
         } 
 
         //compare password
         const doesPasswordMatch = await bcrypt.compare(password, user.password)
 
         if(!doesPasswordMatch){
-            return {success: false,message: "username or password is wrong. please check your credentials"}
-            
+            return new ErrorResult("username or password is wrong. please check your credentials")            
         }
 
         const accessToken = jwt.sign({

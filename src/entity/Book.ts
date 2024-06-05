@@ -4,6 +4,8 @@ import { Category } from "./Category"
 
 @ChildEntity()
 export class Book extends Shelfitem {
+    @Column()
+    name: string
 
     @Column()
     author: string

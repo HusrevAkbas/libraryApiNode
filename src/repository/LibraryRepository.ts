@@ -1,7 +1,7 @@
 import { AppDataSource } from "../data-source";
 import { Library } from "../entity/Library";
 
-export class LibraryController {
+export class LibraryRepository {
 
     private libraryRepository = AppDataSource.getRepository(Library)
 

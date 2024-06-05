@@ -2,7 +2,7 @@ import { AppDataSource } from "../data-source";
 import { Book } from "../entity/Book";
 import { Category } from "../entity/Category";
 
-export class BookController {
+export class BookRepository {
     constructor(){}
 
     private bookRepository = AppDataSource.getRepository(Book)
