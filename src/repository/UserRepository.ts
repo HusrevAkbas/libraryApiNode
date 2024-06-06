@@ -12,9 +12,10 @@ export class UserRepository {
         return this.userRepository.find()
     }
 
-    one(id: number) {
+    one(id: number,options?) {
         return this.userRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: options
         })
     }
 
@@ -28,7 +29,7 @@ export class UserRepository {
         return this.userRepository.findOneBy({email})
     }
 
-    add(user: User) {
+    save(user: User) {
         return this.userRepository.save(user)
     }
 

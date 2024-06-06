@@ -6,34 +6,43 @@ import { User } from "../entity/User";
 import { ErrorResult } from "../utility/result/ErrorResult";
 import { Library } from "../entity/Library";
 import { LibraryRepository } from "../repository/LibraryRepository";
+import { Adress } from "../entity/Adress";
+import { AdressRepository } from "../repository/AdressRepository";
 
 export class UserService {
-    private userController = new UserRepository()
-    private libraryController = new LibraryRepository()
+    private userRepository = new UserRepository()
+    private libraryRepository = new LibraryRepository()
+    private adressRepository = new AdressRepository()
 
     async findAll(req: Request, res:Response, next: NextFunction){
-        return this.userController.all()
+        return this.userRepository.all()
             .catch(err=>{return ("Error getting users")})
     }
 
     async findById(req: Request, res:Response, next: NextFunction){        
         const id = parseInt(req.params.id)        
         if(isNaN(id)) return "id parameter must be a number"
-        const user = await this.userController.one(id)
+        const user = await this.userRepository.one(id)
         return user ? user : `user with id: ${id} does not exist`
     }
 
     async findByUsername(req: Request, res:Response, next: NextFunction){        
         const username = req.query.username.toString()
-        const user = await this.userController.findByUsername(username)
+        const user = await this.userRepository.findByUsername(username)
         return user ? user : `user with username: ${username} does not exist`
     }
 
     async update(req: Request, res:Response, next: NextFunction){
-        const id = Number(req.params.id);
-        const user = await this.userController.one(id)
-        const newUser = await this.userController.preload(req.body)
-        return newUser ? this.userController.update(newUser) : `user with id: ${id} does not exist`        
+        const user = await this.userRepository.one(req.body.id,{libraries:true})
+        console.log(user)
+        if(req.body.adress) {
+            const adress = await this.adressRepository.add(req.body.adress)
+            req.body.adress = adress
+        }
+        const newUser = await this.userRepository.preload(req.body)
+
+        const lastuser = this.userRepository.merge(user,newUser)
+        return lastuser ? this.userRepository.update(lastuser) : `user does not exist`    
     }
 
     //use register() instead
@@ -45,38 +54,40 @@ export class UserService {
     async delete(req: Request, res:Response, next: NextFunction){
         const id = parseInt(req.params.id)
         if(isNaN(id)) return "id parameter must be a number"
-        const userToRemove = await this.userController.one(id)
-        return userToRemove ? await this.userController.remove(userToRemove) : `user with id: ${id} does not exist`
+        const userToRemove = await this.userRepository.one(id)
+        return userToRemove ? await this.userRepository.remove(userToRemove) : `user with id: ${id} does not exist`
     }
 
     async isUsernameExist(req: Request, res:Response, next: NextFunction){        
         const username = req.query.username.toString()
-        const user = await this.userController.findByUsername(username)
+        const user = await this.userRepository.findByUsername(username)
         return user ? true : false
     }
 
     async isEmailExist(req: Request, res:Response, next: NextFunction){        
         const email = req.query.email.toString()
-        const user = await this.userController.findByEmail(email)
+        const user = await this.userRepository.findByEmail(email)
         return user ? true : false
     }
 
     async register(req: Request, res: Response, next: NextFunction) {
-            let user = await this.userController.findByUsername(req.body.username)
+            let user = await this.userRepository.findByUsername(req.body.username)
 
             if(user){
                 return new ErrorResult("Username is already in use")
             }
 
-            user = await this.userController.findByEmail(req.body.email)
+            user = await this.userRepository.findByEmail(req.body.email)
 
             if(user){
                 return new ErrorResult("email is already in use")
             }
 
-            const userToAdd: User = this.userController.create(req.body)
+            const userToAdd: User = this.userRepository.create(req.body)
 
-            const addedUser = await this.userController.add(userToAdd)
+            const addedUser = await this.userRepository.save(userToAdd)
+
+            console.log(addedUser)
 
             if(!addedUser){
                 return "User could not registered"
@@ -86,7 +97,7 @@ export class UserService {
                 library.name = `${userToAdd.username}'s Library`
                 library.user = addedUser
 
-                await this.libraryController.save(library)
+                await this.libraryRepository.save(library)
 
                 return addedUser
             }
@@ -95,7 +106,7 @@ export class UserService {
     async login (req: Request, res: Response, next: NextFunction){
 
         const {username, password} = req.body
-        const user = await this.userController.findByUsername(username)
+        const user = await this.userRepository.findByUsername(username)
         if(!user) {
             return new ErrorResult("username or password is wrong. please check your credentials")
         } 

@@ -32,27 +32,21 @@ export class AdressService {
         const errors = []
 
         const adress = await this.adressRepository.one(req.body.id,{user:true,library:true})
+
+        if (!adress) return new ErrorResult('adress does not exist')
+
         const body = await this.adressRepository.preload(req.body)
 
-        const newAdress = await this.adressRepository.merge(adress,body)
+        const newAdress = this.adressRepository.merge(adress,body)
 
         console.log(newAdress)
 
-        if (!newAdress) return new ErrorResult('adress does not exist')
-        console.log(newAdress)
-
-        //find user by id and assign book.user
+        //find user by id and assign adress.user
         const userId = newAdress.user.id
-        const user = await this.userRepository.one(userId)
+        const user = await this.userRepository.one(userId,{libraries:true})
         if (!user) { 
-            return new ErrorResult(`user with id: ${userId} does not exist. adress have to belong to an user`)
+            errors.push(`user with id: ${userId} does not exist. adress have to belong to an user`)
         }
-
-        //find library by id and assign book.library
-        const libraryId = newAdress.library.id
-        await this.libraryRepository.one(libraryId).then(lib => {
-            lib ? newAdress.library = lib : errors.push(`library with id: ${libraryId} does not exist`)
-        })
 
         return !errors.length ? await this.adressRepository.update(newAdress) :  new ErrorResult(errors.toString())
     }

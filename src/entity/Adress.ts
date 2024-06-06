@@ -6,19 +6,22 @@ import { User } from "./User";
 @Entity()
 export class Adress extends EntityBasics {
 
-    @ManyToOne(()=>User, (user)=>user.adresses , {eager:true})
+    @ManyToOne(()=>User, (user)=>user.adresses)
     @JoinColumn()
     user :User
 
-    @OneToOne(()=>Library, (library)=> library.adress , {nullable:true, eager:true})
+    @OneToOne(()=>Library, (library)=> library.adress)
     @JoinColumn()
     library :Library
 
-    @Column({default: 'My adress name'})
+    @Column({default: 'Default adress'})
     name :string // for example: home, office, fathers' etc.
 
     @Column()
     country :string
+
+    @Column({nullable:true})
+    state :string
 
     @Column()
     city :string
@@ -26,9 +29,6 @@ export class Adress extends EntityBasics {
     @Column()
     zipcode :number
 
-    @Column()
-    adressLine1 :string
-
     @Column({nullable:true})
-    adressLine2 :string
+    adressLine :string
 }
