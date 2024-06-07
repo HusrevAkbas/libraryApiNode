@@ -3,6 +3,10 @@ import { Adress } from "../entity/Adress";
 
 export class AdressRepository {
     private adressRepository = AppDataSource.getRepository(Adress)
+    
+    create(adress: Adress): Adress {
+        return this.adressRepository.create(adress)
+    }
 
     find() {
         return this.adressRepository.find();

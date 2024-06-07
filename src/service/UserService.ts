@@ -33,16 +33,16 @@ export class UserService {
     }
 
     async update(req: Request, res:Response, next: NextFunction){
-        const user = await this.userRepository.one(req.body.id,{libraries:true})
-        console.log(user)
         if(req.body.adress) {
-            const adress = await this.adressRepository.add(req.body.adress)
-            req.body.adress = adress
+            const adress: Adress = {...req.body.adress, user: {id: req.body.id}}
+            await this.adressRepository.add(adress)
         }
+        const user = await this.userRepository.one(req.body.id,{libraries:true,adresses:true})
         const newUser = await this.userRepository.preload(req.body)
 
         const lastuser = this.userRepository.merge(user,newUser)
-        return lastuser ? this.userRepository.update(lastuser) : `user does not exist`    
+        console.log(lastuser)
+        return lastuser ? this.userRepository.update(lastuser) : new ErrorResult(`user does not exist`) 
     }
 
     //use register() instead
