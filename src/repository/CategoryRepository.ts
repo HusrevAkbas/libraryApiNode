@@ -9,8 +9,11 @@ export class CategoryRepository{
         return this.categoryRepository.find()
     }
 
-    one(id: number) {
-        return this.categoryRepository.findOneBy({id})
+    one(id: number, relations?) {
+        return this.categoryRepository.findOne({
+            where: {id},
+            relations: relations
+        })
     }
 
     add(category: Category) {

@@ -4,6 +4,7 @@ import { EntityBasics } from "./Entity"
 
 @Entity({name:"categories"})
 export class Category extends EntityBasics {
+    
     @Column({unique: true})
     name: string
 

@@ -31,9 +31,9 @@ export class User extends EntityBasics {
     libraries: Library[]
 
     @OneToMany(()=>Shelfitem, (shelfitem)=>shelfitem.user, {eager: true})
-    shelfitem: Shelfitem[]
+    shelfitems: Shelfitem[]
 
-    @OneToMany(()=>Adress, (adress)=>adress.user,{nullable:true})
+    @OneToMany(()=>Adress, (adress)=>adress.user,{nullable:true,eager:true})
     adresses: Adress[]
 
     @BeforeInsert()

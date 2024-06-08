@@ -6,7 +6,7 @@ import { User } from "./User";
 @Entity()
 export class Adress extends EntityBasics {
 
-    @ManyToOne(()=>User, (user)=>user.adresses , {eager:true})
+    @ManyToOne(()=>User, (user)=>user.adresses,{nullable:true})
     @JoinColumn()
     user :User
 
@@ -14,7 +14,7 @@ export class Adress extends EntityBasics {
     @JoinColumn()
     library :Library
 
-    @Column({default: 'My adress name'})
+    @Column({default: 'Default adress'})
     name :string // for example: home, office, fathers' etc.
 
     @Column()
@@ -26,9 +26,6 @@ export class Adress extends EntityBasics {
     @Column()
     zipcode :number
 
-    @Column()
-    adressLine1 :string
-
     @Column({nullable:true})
-    adressLine2 :string
+    adressLine1 :string
 }
