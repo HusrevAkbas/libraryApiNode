@@ -15,7 +15,7 @@ export class AdressService {
     }
 
     async add(req: Request, res: Response, next: NextFunction) {
-        return await this.adressRepository.add(req.body)
+        return await this.adressRepository.save(req.body)
     }
 
     async findById(req: Request, res: Response, next: NextFunction) {

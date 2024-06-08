@@ -18,7 +18,7 @@ export const userRoutes = [
         action: "delete"
     }, {
         method: "put",
-        route: "/users/:id",
+        route: "/users",
         controller: UserService,
         action: "update"
     }, {

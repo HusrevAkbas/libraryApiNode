@@ -6,50 +6,50 @@ import { User } from "../entity/User";
 import { ErrorResult } from "../utility/result/ErrorResult";
 import { Library } from "../entity/Library";
 import { LibraryRepository } from "../repository/LibraryRepository";
-import { Adress } from "../entity/Adress";
+import { UserLoginResponse } from "../DTO/UserLoginResponse";
+import { UserResponse } from "../DTO/UserResponse";
+import { SuccessResult } from "../utility/result/SuccessResult";
 import { AdressRepository } from "../repository/AdressRepository";
 
 export class UserService {
     private userRepository = new UserRepository()
     private libraryRepository = new LibraryRepository()
-    private adressRepository = new AdressRepository()
+    private addressRepository = new AdressRepository()
 
     async findAll(req: Request, res:Response, next: NextFunction){
-        return this.userRepository.all()
-            .catch(err=>{return ("Error getting users")})
+        return (await this.userRepository.all()).map(user=> new UserResponse(user))
     }
 
     async findById(req: Request, res:Response, next: NextFunction){        
         const id = parseInt(req.params.id)        
         if(isNaN(id)) return "id parameter must be a number"
         const user = await this.userRepository.one(id)
-        return user ? user : `user with id: ${id} does not exist`
+        return user ? new UserResponse(user) : `user with id: ${id} does not exist`
     }
 
     async findByUsername(req: Request, res:Response, next: NextFunction){        
         const username = req.query.username.toString()
         const user = await this.userRepository.findByUsername(username)
-        return user ? user : `user with username: ${username} does not exist`
+        return user ? new UserResponse(user) : `user with username: ${username} does not exist`
     }
 
     async update(req: Request, res:Response, next: NextFunction){
-        if(req.body.adress) {
-            const adress: Adress = {...req.body.adress, user: {id: req.body.id}}
-            await this.adressRepository.add(adress)
-        }
-        const user = await this.userRepository.one(req.body.id,{libraries:true,adresses:true})
+        console.log(req.body.adress)
         const newUser = await this.userRepository.preload(req.body)
+        if(!newUser) return new ErrorResult(`user does not exist`)
 
-        const lastuser = this.userRepository.merge(user,newUser)
-        console.log(lastuser)
-        return lastuser ? this.userRepository.update(lastuser) : new ErrorResult(`user does not exist`) 
+        //update or add new adress to user
+        if(req.body.adress !== undefined){
+            this.addressRepository.save({
+                ...req.body.adress,
+                user:{
+                    id: req.body.id
+                }})
+        }
+        
+        const updatedUser = await this.userRepository.update(newUser)
+        return updatedUser ? new SuccessResult('User updated') : new ErrorResult(`user could not updated`)
     }
-
-    //use register() instead
-    // async add(req: Request, res:Response, next: NextFunction){
-    //     const user = req.body
-    //     return this.userController.add(user).catch(err=>console.log(err))
-    // }
 
     async delete(req: Request, res:Response, next: NextFunction){
         const id = parseInt(req.params.id)
@@ -71,36 +71,35 @@ export class UserService {
     }
 
     async register(req: Request, res: Response, next: NextFunction) {
-            let user = await this.userRepository.findByUsername(req.body.username)
+            
+        let user = await this.userRepository.findByUsername(req.body.username)
 
-            if(user){
-                return new ErrorResult("Username is already in use")
-            }
+        if(user){
+            return new ErrorResult("Username is already in use")
+        }
 
-            user = await this.userRepository.findByEmail(req.body.email)
+        user = await this.userRepository.findByEmail(req.body.email)
 
-            if(user){
-                return new ErrorResult("email is already in use")
-            }
+        if(user){
+            return new ErrorResult("email is already in use")
+        }
 
-            const userToAdd: User = this.userRepository.create(req.body)
+        const userToAdd: User = this.userRepository.create(req.body)
 
-            const addedUser = await this.userRepository.save(userToAdd)
+        const addedUser = await this.userRepository.save(userToAdd)
 
-            console.log(addedUser)
+        if(!addedUser){
+            return "User could not registered"
+        } else {
 
-            if(!addedUser){
-                return "User could not registered"
-            } else {
+            const library = new Library()
+            library.name = `${userToAdd.username}'s Library`
+            library.user = addedUser
 
-                const library = new Library()
-                library.name = `${userToAdd.username}'s Library`
-                library.user = addedUser
+               await this.libraryRepository.save(library)
 
-                await this.libraryRepository.save(library)
-
-                return addedUser
-            }
+            return addedUser
+        }
     }
 
     async login (req: Request, res: Response, next: NextFunction){
@@ -122,11 +121,10 @@ export class UserService {
             username: user.username,
             email: user.email
         }, process.env.SECRET_KEY,{expiresIn:"10d"})
+        
+        const responseUser: UserLoginResponse = new UserLoginResponse(user)
 
-        //User DTO will be configured
-        delete user.password
-
-        return {user: user, token : accessToken, success: true}
+        return {user: responseUser, token : accessToken, success: true}
         
     }
 }

@@ -1,29 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import { CategoryRepository } from "../repository/CategoryRepository"
 import { Category } from "../entity/Category";
+import { ErrorResult } from "../utility/result/ErrorResult";
 
 export class CategoryService {
 
     private categoryController = new CategoryRepository();
 
     async findAll(req: Request, res: Response, next: NextFunction) {
-        this.categoryController.all()
-        .then(data=>res.send(data))
-        .catch(err => console.log("Error getting users"))
+        return this.categoryController.all()
     }
 
     async findById(req: Request, res: Response, next: NextFunction) {
 
         const id = parseInt(req.params.id)
 
-        this.categoryController.one(id)
-        .then(data=>{
-            data ? res.send(data) : res.send(`Category with id: ${id} does not exist`)
-        })
-        .catch(err=>{
-            res.send(`Category with id: ${id} does not exist`)
-        })
-        // return category.id ? category : `Category with id: ${id} does not exist`
+        const category = await this.categoryController.one(id)
+
+        return category ? category : new ErrorResult(`Category with id: ${id} does not exist`)
     }
 
     async update(req: Request, res: Response, next: NextFunction) {

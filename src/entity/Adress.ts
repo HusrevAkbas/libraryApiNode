@@ -6,7 +6,7 @@ import { User } from "./User";
 @Entity()
 export class Adress extends EntityBasics {
 
-    @ManyToOne(()=>User, (user)=>user.adresses)
+    @ManyToOne(()=>User, (user)=>user.adresses,{nullable:true})
     @JoinColumn()
     user :User
 
@@ -30,5 +30,5 @@ export class Adress extends EntityBasics {
     zipcode :number
 
     @Column({nullable:true})
-    adressLine :string
+    adressLine1 :string
 }

@@ -19,7 +19,7 @@ export class AdressRepository {
         })    
     }
 
-    add(adress :Adress){
+    save(adress :Adress){
         return this.adressRepository.save(adress)
     }
 
