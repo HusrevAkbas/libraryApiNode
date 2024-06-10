@@ -28,7 +28,4 @@ export class Book extends Shelfitem {
 
     @Column()
     isbn13: string
-
-    @Column()
-    quantity: number
 }

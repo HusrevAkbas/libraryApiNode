@@ -1,5 +1,6 @@
 import { ChildEntity, Column } from "typeorm";
 import { User } from "./User";
+import { Adress } from "./Adress";
 
 @ChildEntity()
 export class PersonalUser extends User {
@@ -9,9 +10,6 @@ export class PersonalUser extends User {
 
     @Column()
     lastname: string
-
-    @Column()
-    adres: string
     
     @Column()
     status: boolean

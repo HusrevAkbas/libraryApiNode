@@ -7,9 +7,9 @@ import { EntityBasics } from "./Entity"
 @TableInheritance({ column: { type: "varchar", name: "type", default: "Book" } })
 export class Shelfitem extends EntityBasics {
 
-    @ManyToOne(()=>User, {nullable: false, onDelete:"NO ACTION"})
+    @ManyToOne(()=>User, {nullable: true, onDelete:"NO ACTION"})
     user: User
 
-    @ManyToOne(()=>Library,{nullable: false, onDelete: "NO ACTION"})
+    @ManyToOne(()=>Library,{nullable: true, onDelete: "NO ACTION"})
     library: Library
 }
