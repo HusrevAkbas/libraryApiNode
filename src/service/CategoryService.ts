@@ -13,9 +13,9 @@ export class CategoryService {
 
     async findById(req: Request, res: Response, next: NextFunction) {
 
-        const id = parseInt(req.params.id)
+        const id = req.params.id
 
-        const category = await this.categoryController.one(id)
+        const category = await this.categoryController.findById(id)
 
         return category ? category : new ErrorResult(`Category with id: ${id} does not exist`)
     }
@@ -40,9 +40,9 @@ export class CategoryService {
     }
 
     async delete(req: Request, res: Response, next: NextFunction) {
-        const id = parseInt(req.params.id)
+        const id = req.params.id
         let categoryToRemove:Category
-        await this.categoryController.one(id)
+        await this.categoryController.findById(id)
         .then((data)=>{
             data ? categoryToRemove = data : res.send(`Category with id: ${id} does not exist`)
         })

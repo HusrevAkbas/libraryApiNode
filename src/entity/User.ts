@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, TableInheritance, OneToMany, JoinColumn, BeforeInsert } from "typeorm"
+import { Entity, Column, TableInheritance, OneToMany, JoinColumn, BeforeInsert } from "typeorm"
 import { Library } from "./Library"
 import { Shelfitem } from "./Shelfitem"
 import * as bcrypt from "bcrypt"

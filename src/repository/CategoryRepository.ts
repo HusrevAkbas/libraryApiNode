@@ -9,7 +9,7 @@ export class CategoryRepository{
         return this.categoryRepository.find()
     }
 
-    one(id: number, relations?) {
+    findById(id: string, relations?:any) {
         return this.categoryRepository.findOne({
             where: {id},
             relations: relations

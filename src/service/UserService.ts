@@ -21,9 +21,8 @@ export class UserService {
     }
 
     async findById(req: Request, res:Response, next: NextFunction){        
-        const id = parseInt(req.params.id)        
-        if(isNaN(id)) return "id parameter must be a number"
-        const user = await this.userRepository.one(id)
+        const id = req.params.id
+        const user = await this.userRepository.findById(id)
         return user ? new UserResponse(user) : `user with id: ${id} does not exist`
     }
 
@@ -52,9 +51,8 @@ export class UserService {
     }
 
     async delete(req: Request, res:Response, next: NextFunction){
-        const id = parseInt(req.params.id)
-        if(isNaN(id)) return "id parameter must be a number"
-        const userToRemove = await this.userRepository.one(id)
+        const id = req.params.id
+        const userToRemove = await this.userRepository.findById(id)
         return userToRemove ? await this.userRepository.remove(userToRemove) : `user with id: ${id} does not exist`
     }
 

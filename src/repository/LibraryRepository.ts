@@ -9,13 +9,13 @@ export class LibraryRepository {
         return this.libraryRepository.find();
     }
 
-    one(id: number) {
+    one(id: string) {
         return this.libraryRepository.findOne({
             where: { id }
         })
     }
 
-    findByUserId(id: number){
+    findByUserId(id: string){
         return this.libraryRepository.find({
             where: {user:{id}}
         })
@@ -25,7 +25,7 @@ export class LibraryRepository {
         return this.libraryRepository.save(library)
     }
 
-    update(id: number, library: Library) {
+    update(id: string, library: Library) {
         return this.libraryRepository.update(id, library)
     }
 

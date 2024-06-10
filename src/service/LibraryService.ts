@@ -15,14 +15,14 @@ export class LibraryService {
     }
 
     async findById(req:Request, res:Response, next: NextFunction){
-        const id = Number(req.params.id)
+        const id = req.params.id
         this.libraryController.one(id).then(data => {
             data ? res.send(data) : res.send(`library with ${id} does not exist`)
         }).catch(err=>res.send(err))
     }
 
     async findByUserId(req:Request, res:Response, next: NextFunction){
-        const id = parseInt(req.params.id)
+        const id = req.params.id
         const library = await this.libraryController.findByUserId(id)
         return library.length > 0 ?  library : {success: false, message: 'could not found library'}
     }
@@ -36,8 +36,8 @@ export class LibraryService {
         if(errors.length>0) return errors
 
         //check if user exists
-        const userId = Number(body.user.id)
-        this.userController.one(userId).then(data=>{
+        const userId = body.user.id
+        this.userController.findById(userId).then(data=>{
             data ? this.libraryController.save(body).then(added=>res.send(added)) 
             : res.send(`library must belong to a user. user with ${userId} does not exist`)
         }).catch(err=>res.send(err))
@@ -46,11 +46,11 @@ export class LibraryService {
     async update(req:Request, res:Response, next: NextFunction){
 
         //find user by userid
-        const userId = Number(req.body.user.id)
-        const user = await this.userController.one(userId)
+        const userId = req.body.user.id
+        const user = await this.userController.findById(userId)
 
         //check if library exists
-        const id = Number(req.params.id)
+        const id = req.params.id
         const isLibrary = await this.libraryController.one(id)
 
         //set user to library
@@ -60,7 +60,7 @@ export class LibraryService {
     }
     
     async delete (req:Request, res:Response, next: NextFunction){
-        const id = Number(req.params.id)
+        const id = req.params.id
         const library = await this.libraryController.one(id)
         return library ? this.libraryController.remove(library) : `library with ${id} does not exist`
         

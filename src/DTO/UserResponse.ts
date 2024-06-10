@@ -3,7 +3,7 @@ import { Shelfitem } from "../entity/Shelfitem"
 import { User } from "../entity/User"
 
 export class UserResponse {
-    id: number
+    id: string
     username:string
     email: string
     imgUrl: string

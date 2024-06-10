@@ -2,8 +2,8 @@ import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, PrimaryGenerate
 
 export abstract class EntityBasics extends BaseEntity {
     
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn('uuid')
+    id: string
 
     @Column({nullable: true})
     imgUrl: string

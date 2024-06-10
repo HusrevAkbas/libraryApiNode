@@ -20,9 +20,9 @@ export class BookService {
 
     async findById(req: Request, res: Response, next: NextFunction){
 
-        const bookId = parseInt(req.params.id)
+        const bookId = req.params.id
 
-        this.bookController.one(bookId).then(data=>{
+        this.bookController.findById(bookId).then(data=>{
 
             data ? res.send(data) : res.send(`book with id: ${bookId} does not exist`)
 
@@ -35,7 +35,7 @@ export class BookService {
 
         //find user by id and assign book.user
         const userId = book.user.id
-        await this.userController.one(userId).then(user=>{
+        await this.userController.findById(userId).then(user=>{
             user ? book.user = user : errors.push(`user with id: ${userId} does not exist. book have to belong to an user`)
         }).catch(err=>errors.push(`error on getting user:\n${err}`))
 
@@ -49,7 +49,7 @@ export class BookService {
         const categories = []
 
         const promises = book.categories.map(async val=>{
-            return this.categoryController.one(val.id).then((category)=>{
+            return this.categoryController.findById(val.id).then((category)=>{
                 category ? categories.push(category) : errors.push(`category with id: ${val.id} does not exist`)
             }).catch(err=>errors.push(`error occured on getting category with value: ${val}\n${err}`))
         })
@@ -73,7 +73,7 @@ export class BookService {
         
         //find user by id and assign book.user
         const userId = req.body.user.id
-        await this.userController.one(userId).then(user=>{
+        await this.userController.findById(userId).then(user=>{
             user ? newBook.user = user : errors.push(`user with id: ${userId} does not exist. book have to belong to an user`)
         }).catch(err=>errors.push(`error on getting user:\n${err}`))
 
@@ -86,7 +86,7 @@ export class BookService {
         const categories = []
 
         const promises = req.body.categories.map(async val=>{
-            return this.categoryController.one(val.id).then((category)=>{
+            return this.categoryController.findById(val.id).then((category)=>{
                 category ? categories.push(category) : errors.push(`category with id: ${val.id} does not exist`)
             }).catch(err=>errors.push(`error occured on getting category with value: ${val}\n${err}`))
         })
@@ -98,17 +98,17 @@ export class BookService {
         console.log(newBook)
         await this.bookController.update(newBook)
 
-        !errors.length ? this.bookController.one(newBook.id).then(data=>{
+        !errors.length ? this.bookController.findById(newBook.id).then(data=>{
             data ? res.send(data) : errors.push(`updated book with ${newBook.id} does not exist`)
         }).catch(err=> `error occured on book update:\n${err}`) : res.send(errors)
     }
 
     async delete(req: Request, res: Response, next: NextFunction){
-        const bookId = parseInt(req.params.id)
+        const bookId = req.params.id
 
         let bookToRemove: Book;
 
-        await this.bookController.one(bookId).then(data=>{
+        await this.bookController.findById(bookId).then(data=>{
             data ? bookToRemove = data : res.send(`book with id: ${bookId} does not exist`)
         }).catch(err=>res.send(`error occured on deleting book\n${err}`))
         this.bookController.remove(bookToRemove).then(data=>{

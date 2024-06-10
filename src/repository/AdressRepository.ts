@@ -12,11 +12,18 @@ export class AdressRepository {
         return this.adressRepository.find();
     }
 
-    one(id:number,relations?:any) {
+    findById(id:string,relations?:any) {
         return this.adressRepository.findOne({
             where: {id},
             relations: relations
         })    
+    }
+    
+    findByUserId(userId: string, relations? :any){
+        return this.adressRepository.findOne({
+            where: {user: {id:userId}},
+            relations: relations
+        })
     }
 
     save(adress :Adress){

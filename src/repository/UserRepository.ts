@@ -12,10 +12,10 @@ export class UserRepository {
         return this.userRepository.find()
     }
 
-    one(id: number,options?) {
+    findById(id: string,relations?:any) {
         return this.userRepository.findOne({
             where: { id },
-            relations: options
+            relations: relations
         })
     }
 

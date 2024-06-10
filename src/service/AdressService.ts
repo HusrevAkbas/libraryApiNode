@@ -20,10 +20,7 @@ export class AdressService {
 
     async findById(req: Request, res: Response, next: NextFunction) {
 
-        const adressId = parseInt(req.params.id)
-        if (isNaN(adressId)) return new ErrorResult("id parameter must be a number")
-
-        const adress = await this.adressRepository.one(adressId)
+        const adress = await this.adressRepository.findById(req.params.id)
 
         return adress ? adress : new ErrorResult("adress couldn't found")
     }
@@ -31,7 +28,7 @@ export class AdressService {
     async update(req: Request, res: Response, next: NextFunction) {
         const errors = []
 
-        const adress = await this.adressRepository.one(req.body.id,{user:true,library:true})
+        const adress = await this.adressRepository.findById(req.body.id,{user:true,library:true})
 
         if (!adress) return new ErrorResult('adress does not exist')
 
@@ -43,7 +40,7 @@ export class AdressService {
 
         //find user by id and assign adress.user
         const userId = newAdress.user.id
-        const user = await this.userRepository.one(userId,{libraries:true})
+        const user = await this.userRepository.findById(userId,{libraries:true})
         if (!user) { 
             errors.push(`user with id: ${userId} does not exist. adress have to belong to an user`)
         }
@@ -53,10 +50,9 @@ export class AdressService {
 
     async delete(req: Request, res: Response, next: NextFunction) {
 
-        const adressId = parseInt(req.params.id)
-        if (isNaN(adressId)) return new ErrorResult("id parameter must be a number")
+        const adressId = req.params.id
 
-        const adress = await this.adressRepository.one(adressId)
+        const adress = await this.adressRepository.findById(adressId)
         if (!adress) return new ErrorResult("adress couldn't found")
 
         const deletedAdress = await this.adressRepository.remove(adress)
