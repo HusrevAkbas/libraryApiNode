@@ -3,7 +3,9 @@ import { Routes } from "../routes"
 import { AppDataSource } from "../data-source"
 
 const checkRequired = (req:Request,res: Response ,next: NextFunction)=>{
-    const{path,method} = req
+
+    const {path,method} = req
+    
     const newpath = path.split('/')[1]
 
     if(req.path == '/login' || path == '/file'){
@@ -11,7 +13,7 @@ const checkRequired = (req:Request,res: Response ,next: NextFunction)=>{
         return
     }
 
-    if(method == ('POST' || 'PUT')) {
+    if(method == ('POST')) {
         const className = getClassName(`/${newpath}`)
         const metadata = getMappedMetadata(className)
 
