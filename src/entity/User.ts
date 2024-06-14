@@ -1,9 +1,10 @@
-import { Entity, Column, TableInheritance, OneToMany, JoinColumn, BeforeInsert } from "typeorm"
+import { Entity, Column, TableInheritance, OneToMany, JoinColumn, BeforeInsert, ManyToMany } from "typeorm"
 import { Library } from "./Library"
 import { Shelfitem } from "./Shelfitem"
 import * as bcrypt from "bcrypt"
 import { EntityBasics } from "./Entity"
 import { Adress } from "./Adress"
+import { Activity } from "./Activity"
 
 @Entity({name:"users"})
 @TableInheritance({ column: { type: "varchar", name: "type", default: "PersonalUser" } })
@@ -35,6 +36,12 @@ export class User extends EntityBasics {
 
     @OneToMany(()=>Adress, (adress)=>adress.user,{nullable:true,eager:true})
     adresses: Adress[]
+
+    @OneToMany(()=>Activity,(act)=>act.senderUser,{nullable:true})
+    createdActivities: Activity []
+
+    @ManyToMany(()=>Activity, (activity)=>activity.participants,{nullable:true, eager:true})
+    participatedActivities: Activity []
 
     @BeforeInsert()
     async hashPassword (){

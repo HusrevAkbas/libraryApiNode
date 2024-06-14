@@ -1,3 +1,4 @@
+import { Activity } from "../entity/Activity"
 import { Library } from "../entity/Library"
 import { Shelfitem } from "../entity/Shelfitem"
 import { User } from "../entity/User"
@@ -10,6 +11,7 @@ export class UserResponse {
     role: string
     libraries: Array<Library>
     shelfitems: Array<Shelfitem>
+    participatedActivities: Array<Activity>
 
     constructor(user:User){
         this.username = user.username
@@ -19,5 +21,6 @@ export class UserResponse {
         this.role = user.role
         this.libraries = user.libraries
         this.shelfitems = user.shelfitems
+        this.participatedActivities = user.participatedActivities
     }
 }
