@@ -4,6 +4,7 @@ import { Book } from "../entity/Book";
 import { UserRepository } from "../repository/UserRepository";
 import { LibraryRepository } from "../repository/LibraryRepository";
 import { CategoryRepository } from "../repository/CategoryRepository";
+import { ErrorResult } from "../utility/result/ErrorResult";
 
 export class BookService {
 
@@ -21,12 +22,11 @@ export class BookService {
     async findById(req: Request, res: Response, next: NextFunction){
 
         const bookId = req.params.id
+        const query = req.query
 
-        this.bookController.findById(bookId).then(data=>{
+        const book = await this.bookController.findById(bookId,query)
 
-            data ? res.send(data) : res.send(`book with id: ${bookId} does not exist`)
-
-        }).catch(err=>res.send(`book with id: ${bookId} does not exist \n${err}`))
+        return book ? book : new ErrorResult('book does not exist')
     }    
 
     async addBook(req: Request, res: Response, next: NextFunction){
@@ -41,7 +41,7 @@ export class BookService {
 
         //find library by id and assign book.library
         const libraryId = book.library.id
-        await this.libraryController.one(libraryId).then(lib=>{
+        await this.libraryController.findById(libraryId).then(lib=>{
             lib ? book.library = lib : errors.push(`library with id: ${libraryId} does not exist. book have to belong to a library`)
         }).catch(err=>errors.push(`error on getting library:\n${err}`))
 
@@ -79,7 +79,7 @@ export class BookService {
 
         //find library by id and assign book.library
         const libraryId = req.body.library.id
-        await this.libraryController.one(libraryId).then(lib=>{
+        await this.libraryController.findById(libraryId).then(lib=>{
             lib ? newBook.library = lib : errors.push(`library with id: ${libraryId} does not exist. book have to belong to a library`)
         }).catch(err=>errors.push(`error on getting library:\n${err}`))
 

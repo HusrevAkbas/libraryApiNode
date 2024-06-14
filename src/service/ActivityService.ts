@@ -12,7 +12,7 @@ export class ActivityService {
 
     async findById(req: Request, res: Response, next: NextFunction){
         const {id} = req.params
-        const activity = await this.activityRepository.findById(id)
+        const activity = await this.activityRepository.findById(id, req.query)
         return activity ? activity : new ErrorResult("activity does not exist")
     }
 

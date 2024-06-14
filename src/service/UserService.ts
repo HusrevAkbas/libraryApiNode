@@ -20,13 +20,17 @@ export class UserService {
         return (await this.userRepository.all()).map(user=> new UserResponse(user))
     }
 
-    async findById(req: Request, res:Response, next: NextFunction){        
+    async findById(req: Request, res:Response, next: NextFunction){       
+
         const id = req.params.id
-        const user = await this.userRepository.findById(id)
-        return user ? new UserResponse(user) : `user with id: ${id} does not exist`
+        const relations = req.query
+
+        const user = await this.userRepository.findById(id,relations)
+
+        return user ? new UserResponse(user) : new ErrorResult(`user does not exist`) 
     }
 
-    async findByUsername(req: Request, res:Response, next: NextFunction){        
+    async findByUsername(req: Request, res:Response, next: NextFunction){       
         const username = req.query.username.toString()
         const user = await this.userRepository.findByUsername(username)
         return user ? new UserResponse(user) : `user with username: ${username} does not exist`

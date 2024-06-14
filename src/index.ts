@@ -13,9 +13,11 @@ AppDataSource.initialize().then(async () => {
     const errorHandler = require("./middleware/ErrorHandler")
     const checkRequiredFormFields = require("./middleware/CheckRequired")
     const multer = require('./middleware/FileParser')
+    const stringToBoolean = require('./middleware/QueryParamsStringToBoolean')
 
     app.use(cors())
     app.use(bodyParser.json())
+    app.use(stringToBoolean)
     app.use(multer)
     app.use(security)
     app.use(checkRequiredFormFields)

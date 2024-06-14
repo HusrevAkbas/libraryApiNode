@@ -11,10 +11,10 @@ export class BookRepository {
         return this.bookRepository.find({relations:{categories:true}});
     }
 
-    findById(id:string) {
+    findById(id:string, relations?: any) {
         return this.bookRepository.findOne({
             where: {id},
-            relations: {categories:true, user:true}
+            relations: relations
         })    
     }
 

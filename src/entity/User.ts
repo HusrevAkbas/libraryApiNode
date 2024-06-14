@@ -19,16 +19,13 @@ export class User extends EntityBasics {
     @Column({nullable: false, unique: true})
     username: string
 
-    @Column({nullable:true})
-    profileImgUrl: string
-
     @Column({default: true})
     status: boolean
 
     @Column({default:"USER", nullable:true})
     role: string
 
-    @OneToMany(()=>Library, (library)=>library.user, {eager:true})
+    @OneToMany(()=>Library, (library)=>library.user)
     libraries: Library[]
 
     @OneToMany(()=>Shelfitem, (shelfitem)=>shelfitem.user, {eager: true})
@@ -40,7 +37,7 @@ export class User extends EntityBasics {
     @OneToMany(()=>Activity,(act)=>act.senderUser,{nullable:true})
     createdActivities: Activity []
 
-    @ManyToMany(()=>Activity, (activity)=>activity.participants,{nullable:true, eager:true})
+    @ManyToMany(()=>Activity, (activity)=>activity.participants,{nullable:true})
     participatedActivities: Activity []
 
     @BeforeInsert()
