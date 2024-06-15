@@ -1,7 +1,6 @@
 import { User } from "../entity/User"
 
 export class UserLoginResponse {
-    success: true
     username:string
     role:string
     id: string
