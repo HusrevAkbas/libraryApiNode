@@ -9,9 +9,19 @@ import { MainService } from "./service/MainService"
 
 export const Routes = [{
     method: "get",
+    route: "/urlpathlist",
+    controller: MainService,
+    action: "entityAllProperties"
+},{
+    method: "get",
     route: "/shemas",
     controller: MainService,
     action: "entityAllProperties"
+},{
+    method: "get",
+    route: "/schemas",
+    controller: MainService,
+    action: "entityClassProperties"
 }, {
     method: "post",
     route: "/file",
