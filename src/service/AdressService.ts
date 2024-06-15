@@ -20,7 +20,7 @@ export class AdressService {
 
     async findById(req: Request, res: Response, next: NextFunction) {
 
-        const adress = await this.adressRepository.findById(req.params.id)
+        const adress = await this.adressRepository.findById(req.params.id, req.query)
 
         return adress ? adress : new ErrorResult("adress couldn't found")
     }

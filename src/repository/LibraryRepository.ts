@@ -9,9 +9,10 @@ export class LibraryRepository {
         return this.libraryRepository.find();
     }
 
-    one(id: string) {
+    findById(id: string, relations?:any) {
         return this.libraryRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: relations
         })
     }
 

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { LibraryRepository } from "../repository/LibraryRepository";
 import { UserRepository } from "../repository/UserRepository";
+import { ErrorResult } from "../utility/result/ErrorResult";
 
 export class LibraryService {
 
@@ -15,16 +16,19 @@ export class LibraryService {
     }
 
     async findById(req:Request, res:Response, next: NextFunction){
+
         const id = req.params.id
-        this.libraryController.one(id).then(data => {
-            data ? res.send(data) : res.send(`library with ${id} does not exist`)
-        }).catch(err=>res.send(err))
+        const relations = req.query
+
+        const library = await this.libraryController.findById(id,relations)
+
+        return library ? library : new ErrorResult('library does not exist')
     }
 
     async findByUserId(req:Request, res:Response, next: NextFunction){
         const id = req.params.id
         const library = await this.libraryController.findByUserId(id)
-        return library.length > 0 ?  library : {success: false, message: 'could not found library'}
+        return library.length > 0 ?  library : new ErrorResult('library does not exist')
     }
 
     async add(req:Request, res:Response, next: NextFunction){
@@ -51,7 +55,7 @@ export class LibraryService {
 
         //check if library exists
         const id = req.params.id
-        const isLibrary = await this.libraryController.one(id)
+        const isLibrary = await this.libraryController.findById(id)
 
         //set user to library
         const updatedLibrary = req.body
@@ -61,7 +65,7 @@ export class LibraryService {
     
     async delete (req:Request, res:Response, next: NextFunction){
         const id = req.params.id
-        const library = await this.libraryController.one(id)
+        const library = await this.libraryController.findById(id)
         return library ? this.libraryController.remove(library) : `library with ${id} does not exist`
         
     }

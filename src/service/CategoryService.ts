@@ -14,8 +14,9 @@ export class CategoryService {
     async findById(req: Request, res: Response, next: NextFunction) {
 
         const id = req.params.id
+        const relations = req.query
 
-        const category = await this.categoryController.findById(id)
+        const category = await this.categoryController.findById(id,relations)
 
         return category ? category : new ErrorResult(`Category with id: ${id} does not exist`)
     }

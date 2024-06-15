@@ -13,9 +13,11 @@ AppDataSource.initialize().then(async () => {
     const errorHandler = require("./middleware/ErrorHandler")
     const checkRequiredFormFields = require("./middleware/CheckRequired")
     const multer = require('./middleware/FileParser')
+    const stringToBoolean = require('./middleware/QueryParamsStringToBoolean')
 
     app.use(cors())
     app.use(bodyParser.json())
+    app.use(stringToBoolean)
     app.use(multer)
     app.use(security)
     app.use(checkRequiredFormFields)
@@ -29,7 +31,7 @@ AppDataSource.initialize().then(async () => {
         (app as any)[route.method](route.route, asyncHandler(async (req: Request, res: Response, next: Function) => {
             const result = await (new (route.controller as any))[route.action](req, res, next)
             if (result instanceof Promise) {
-                result.then(result => result !== null && result !== undefined ? res.send(result) : undefined)
+                result.then(result => result !== null && result !== undefined ? res.send({...result,success:true}) : undefined)
 
             } else if (result !== null && result !== undefined) {
                 res.json(result)
