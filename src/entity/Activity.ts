@@ -14,6 +14,9 @@ export class Activity extends EntityBasics {
     @Column()
     date: Date
 
+    @Column({nullable:true})
+    expireDate: Date
+
     @Column()
     text: string
 

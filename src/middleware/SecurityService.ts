@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken"
+import { ErrorResult } from "../utility/result/ErrorResult";
 
 const securityService = (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -9,14 +10,14 @@ const securityService = (req: Request, res: Response, next: NextFunction) => {
                         return
                 }
                 if(!req.headers.authorization) {
-                        res.send({message: "please login to proceed"})
+                        res.send(new ErrorResult("please login to proceed"))
                         return
                 }
 
                 const {authorization} = req.headers
 
                 if(!authorization.startsWith('Bearer ')) {
-                        res.json({success: false, message: "unauthorized access"})
+                        res.json(new ErrorResult("unauthorized access"))
                         return
                 }
 
@@ -25,7 +26,7 @@ const securityService = (req: Request, res: Response, next: NextFunction) => {
 
                 next()
 
-        } catch (err) {res.send({success: false, message: "unauthorized access"})}
+        } catch (err) {res.send(new ErrorResult("unauthorized access"))}
 }
 
 module.exports = securityService
