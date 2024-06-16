@@ -28,10 +28,10 @@ export class User extends EntityBasics {
     @OneToMany(()=>Library, (library)=>library.user)
     libraries: Library[]
 
-    @OneToMany(()=>Shelfitem, (shelfitem)=>shelfitem.user, {eager: true})
+    @OneToMany(()=>Shelfitem, (shelfitem)=>shelfitem.user,{nullable:true})
     shelfitems: Shelfitem[]
 
-    @OneToMany(()=>Adress, (adress)=>adress.user,{nullable:true,eager:true})
+    @OneToMany(()=>Adress, (adress)=>adress.user,{nullable:true, eager:true})
     adresses: Adress[]
 
     @OneToMany(()=>Activity,(act)=>act.senderUser,{nullable:true})
