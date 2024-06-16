@@ -11,20 +11,15 @@ export const Routes = [{
     method: "get",
     route: "/urlpathlist",
     controller: MainService,
-    action: "entityAllProperties"
+    action: "urlpathlist"
 },{
     method: "get",
     route: "/shemas",
     controller: MainService,
     action: "entityAllProperties"
 },{
-    method: "get",
-    route: "/schemas",
-    controller: MainService,
-    action: "entityClassProperties"
-}, {
     method: "post",
-    route: "/file",
+    route: "/uploadimage",
     controller: ImageService,
     action: "add"
 }, ...userRoutes, ...categoryRoutes, ...libraryRoutes, ...bookRoutes, ...adressRoutes,...activityRoutes]

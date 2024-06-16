@@ -17,7 +17,7 @@ export class Activity extends EntityBasics {
     @Column()
     text: string
 
-    @ManyToMany(()=>User, (user)=>user.participatedActivities,{nullable:true, eager: true})
+    @ManyToMany(()=>User, (user)=>user.participatedActivities,{nullable:true})
     @JoinTable()
     participants: User[]
 
