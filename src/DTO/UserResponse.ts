@@ -1,8 +1,8 @@
-import { Address } from "cluster"
 import { Activity } from "../entity/Activity"
 import { Library } from "../entity/Library"
 import { Shelfitem } from "../entity/Shelfitem"
 import { User } from "../entity/User"
+import { Adress } from "../entity/Adress"
 
 export class UserResponse {
     id: string
@@ -11,7 +11,7 @@ export class UserResponse {
     imgUrl: string
     role: string
     libraries?: Array<Library>
-    adresses?: Array<Address>
+    adresses?: Array<Adress>
     shelfitems?: Array<Shelfitem>
     createdActivities?: Array<Activity>
     participatedActivities?: Array<Activity>
@@ -24,6 +24,7 @@ export class UserResponse {
         this.role = user.role
         this.libraries = user.libraries
         this.shelfitems = user.shelfitems
+        this.adresses = user.adresses
         this.createdActivities = user.createdActivities
         this.participatedActivities = user.participatedActivities
     }

@@ -10,7 +10,4 @@ export class PersonalUser extends User {
 
     @Column()
     lastname: string
-    
-    @Column()
-    status: boolean
 }
