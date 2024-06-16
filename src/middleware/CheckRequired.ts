@@ -8,7 +8,7 @@ const checkRequired = (req:Request,res: Response ,next: NextFunction)=>{
     
     const newpath = path.split('/')[1]
 
-    if(req.path == '/login' || path == '/file'){
+    if(req.path == '/login' || path == '/uploadimage'){
         next()
         return
     }
