@@ -18,7 +18,7 @@ export class Activity extends EntityBasics {
     @Column({nullable:true})
     expireDate: Date
 
-    @Column()
+    @Column({nullable:true})
     text: string
 
     @ManyToMany(()=>User, (user)=>user.participatedActivities,{nullable:true})

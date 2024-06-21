@@ -10,6 +10,7 @@ import { UserLoginResponse } from "../DTO/UserLoginResponse";
 import { UserResponse } from "../DTO/UserResponse";
 import { SuccessResult } from "../utility/result/SuccessResult";
 import { AdressRepository } from "../repository/AdressRepository";
+import { SuccessDataResult } from "../utility/result/SuccessDataResult";
 
 export class UserService {
     private userRepository = new UserRepository()
@@ -17,7 +18,8 @@ export class UserService {
     private addressRepository = new AdressRepository()
 
     async findAll(req: Request, res:Response, next: NextFunction){
-        return (await this.userRepository.all()).map(user=> new UserResponse(user))
+        const users = (await this.userRepository.all()).map(user=> new UserResponse(user))
+        return new SuccessDataResult<Array<UserResponse>>(users)
     }
 
     async findById(req: Request, res:Response, next: NextFunction){       
@@ -27,13 +29,13 @@ export class UserService {
 
         const user = await this.userRepository.findById(id,relations)
 
-        return user ? new UserResponse(user) : new ErrorResult(`user does not exist`) 
+        return user ? new SuccessDataResult(new UserResponse(user)) : new ErrorResult(`user does not exist`) 
     }
 
     async findByUsername(req: Request, res:Response, next: NextFunction){       
         const username = req.query.username.toString()
         const user = await this.userRepository.findByUsername(username)
-        return user ? new UserResponse(user) : `user with username: ${username} does not exist`
+        return user ? new SuccessDataResult(new UserResponse(user)) : `user with username: ${username} does not exist`
     }
 
     async update(req: Request, res:Response, next: NextFunction){
@@ -51,7 +53,7 @@ export class UserService {
         }
         
         const updatedUser = await this.userRepository.update(newUser)
-        return updatedUser ? new SuccessResult('User updated') : new ErrorResult(`user could not updated`)
+        return updatedUser ? new SuccessDataResult (new UserResponse(updatedUser)) : new ErrorResult(`user could not updated`)
     }
 
     async delete(req: Request, res:Response, next: NextFunction){
@@ -100,7 +102,7 @@ export class UserService {
 
                await this.libraryRepository.save(library)
 
-            return addedUser
+            return new SuccessDataResult(new UserResponse(addedUser)) 
         }
     }
 
@@ -123,10 +125,8 @@ export class UserService {
             username: user.username,
             email: user.email
         }, process.env.SECRET_KEY,{expiresIn:"10d"})
-        
-        const responseUser: UserLoginResponse = new UserLoginResponse(user)
 
-        return {user: responseUser, token : accessToken, success: true}
+        return new SuccessDataResult(new UserLoginResponse(user,accessToken))
         
     }
 }

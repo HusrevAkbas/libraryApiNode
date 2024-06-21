@@ -3,7 +3,6 @@ import { AdressRepository } from "../repository/AdressRepository";
 import { ErrorResult } from "../utility/result/ErrorResult";
 import { SuccessResult } from "../utility/result/SuccessResult";
 import { UserRepository } from "../repository/UserRepository";
-import { LibraryRepository } from "../repository/LibraryRepository";
 import { SuccessDataResult } from "../utility/result/SuccessDataResult";
 import { Adress } from "../entity/Adress";
 
@@ -38,8 +37,6 @@ export class AdressService {
         const body = await this.adressRepository.preload(req.body)
 
         const newAdress = this.adressRepository.merge(adress,body)
-
-        console.log(newAdress)
 
         //find user by id and assign adress.user
         const userId = newAdress.user.id

@@ -4,6 +4,7 @@ import { UserRepository } from "../repository/UserRepository";
 import { ErrorResult } from "../utility/result/ErrorResult";
 import { Library } from "../entity/Library";
 import { LibraryResponse } from "../DTO/LibraryResponse";
+import { SuccessDataResult } from "../utility/result/SuccessDataResult";
 
 export class LibraryService {
 
@@ -11,10 +12,8 @@ export class LibraryService {
     private userController = new UserRepository()
 
     async findAll(req:Request, res:Response, next: NextFunction){
-        this.libraryController.all().then(data=>{
-            res.send(data)
-        })
-        .catch(err=>console.log(`error getting libraries: ${err}`));
+        const libraries = await this.libraryController.all()
+        return new SuccessDataResult<Array<Library>>(libraries)
     }
 
     async findById(req:Request, res:Response, next: NextFunction){
@@ -30,7 +29,7 @@ export class LibraryService {
     async findByUserId(req:Request, res:Response, next: NextFunction){
         const id = req.params.id
         const library = await this.libraryController.findByUserId(id)
-        return library.length > 0 ?  library : new ErrorResult('library does not exist')
+        return library.length > 0 ? new SuccessDataResult<Array<Library>>(library)  : new ErrorResult('library does not exist')
     }
 
     async add(req:Request, res:Response, next: NextFunction){
@@ -39,36 +38,44 @@ export class LibraryService {
         //check if request has all required fields
         if(!Object.keys(body).includes('user')) errors.push(`library must belong to a user`)
         if(!Object.keys(body).includes('name')) errors.push(`library must have a name`)
-        if(errors.length>0) return errors
+        if(errors.length>0) return new ErrorResult(errors.toString()) 
 
         //check if user exists
         const userId = body.user.id
-        this.userController.findById(userId).then(data=>{
-            data ? this.libraryController.save(body).then(added=>res.send(added)) 
-            : res.send(`library must belong to a user. user with ${userId} does not exist`)
-        }).catch(err=>res.send(err))
+        const user = await this.userController.findById(userId)
+        return user ? new SuccessDataResult<Library>(await this.libraryController.save(body)) 
+            : new ErrorResult(`library must belong to a user. user does not exist`)
     }
 
     async update(req:Request, res:Response, next: NextFunction){
 
-        //find user by userid
-        const userId = req.body.user.id
-        const user = await this.userController.findById(userId)
-
         //check if library exists
-        const id = req.params.id
-        const isLibrary = await this.libraryController.findById(id)
+        const id = req.body.id
+        const library = await this.libraryController.preload(id)
 
-        //set user to library
-        const updatedLibrary = req.body
-        updatedLibrary.user = user
-        return isLibrary.id ? await this.libraryController.update(id, updatedLibrary) : `library with ${id} does not exist`
+        if(!library) return new ErrorResult("library does not exist")
+
+        //find user by userid if user is sent
+        if(Object.keys(req.body).includes('user')) {
+
+            const userId = req.body.user.id
+
+            const user = await this.userController.findById(userId)
+
+            if(!user){ 
+                return new ErrorResult("user does not exist")
+            } else {
+                library.user = user
+            }
+        }
+
+        const updatedLibrary = await this.libraryController.save(library)
+        return updatedLibrary ? new SuccessDataResult<Library>(updatedLibrary) : new ErrorResult("library could not updated")
     }
     
     async delete (req:Request, res:Response, next: NextFunction){
         const id = req.params.id
         const library = await this.libraryController.findById(id)
-        return library ? this.libraryController.remove(library) : `library with ${id} does not exist`
-        
+        return library ? new SuccessDataResult<Library>(await this.libraryController.remove(library))  : new ErrorResult(`library does not exist`)
     }
 }
