@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, TableInheritance, ManyToOne, OneToOne, OneToMany } from "typeorm"
+import { Entity, Column, ManyToOne, OneToOne, OneToMany } from "typeorm"
 import { User } from "./User"
 import { EntityBasics } from "./Entity"
 import { Adress } from "./Adress"
@@ -12,7 +12,7 @@ export class Library extends EntityBasics {
     @Column({default: 'public'})
     visibility: string
 
-    @ManyToOne(()=>User,(user)=>user.libraries, {onDelete: "NO ACTION"})
+    @ManyToOne(()=>User,(user)=>user.libraries, {onDelete: "NO ACTION",eager:true})
     user: User
 
     @OneToOne(()=>Adress,(adress)=>adress.library, {onDelete: "NO ACTION", nullable:true})

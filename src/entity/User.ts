@@ -1,4 +1,4 @@
-import { Entity, Column, TableInheritance, OneToMany, JoinColumn, BeforeInsert, ManyToMany } from "typeorm"
+import { Entity, Column, TableInheritance, OneToMany, BeforeInsert, ManyToMany, Tree } from "typeorm"
 import { Library } from "./Library"
 import { Shelfitem } from "./Shelfitem"
 import * as bcrypt from "bcrypt"
@@ -13,7 +13,7 @@ export class User extends EntityBasics {
     @Column({nullable: false, unique: true})
     email: string
 
-    @Column()
+    @Column({nullable: false})
     password: string
 
     @Column({nullable: false, unique: true})
@@ -25,7 +25,7 @@ export class User extends EntityBasics {
     @Column({default:"USER", nullable:true})
     role: string
 
-    @OneToMany(()=>Library, (library)=>library.user)
+    @OneToMany(()=>Library, (library)=>library.user,{nullable: true})
     libraries: Library[]
 
     @OneToMany(()=>Shelfitem, (shelfitem)=>shelfitem.user,{nullable:true})

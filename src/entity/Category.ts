@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm"
+import { Entity, Column, ManyToMany } from "typeorm"
 import { Book } from "./Book"
 import { EntityBasics } from "./Entity"
 
