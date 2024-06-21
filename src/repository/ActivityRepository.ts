@@ -21,7 +21,7 @@ export class ActivityRepository {
     
     findByUserId(userId: string, relations? :any){
         return this.adressRepository.findOne({
-            where: {senderUser: {id:userId}},
+            where: {user: {id:userId}},
             relations: relations
         })
     }

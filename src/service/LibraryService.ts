@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { LibraryRepository } from "../repository/LibraryRepository";
 import { UserRepository } from "../repository/UserRepository";
 import { ErrorResult } from "../utility/result/ErrorResult";
+import { UserResponse } from "../DTO/UserResponse";
+import { Library } from "../entity/Library";
+import { LibraryResponse } from "../DTO/LibraryResponse";
 
 export class LibraryService {
 
@@ -20,9 +23,9 @@ export class LibraryService {
         const id = req.params.id
         const relations = req.query
 
-        const library = await this.libraryController.findById(id,relations)
+        const library :Library = await this.libraryController.findById(id,relations)
 
-        return library ? library : new ErrorResult('library does not exist')
+        return library ? new LibraryResponse(library)  : new ErrorResult('library does not exist')
     }
 
     async findByUserId(req:Request, res:Response, next: NextFunction){

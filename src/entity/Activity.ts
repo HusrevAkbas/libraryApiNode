@@ -1,12 +1,13 @@
 import { EntityBasics } from "./Entity";
 import { User } from "./User";
-import { Column, ManyToMany, JoinTable, ManyToOne, Entity } from "typeorm";
+import { Column, ManyToMany, JoinTable, ManyToOne, Entity, JoinColumn } from "typeorm";
 
 @Entity()
 export class Activity extends EntityBasics {
 
     @ManyToOne(()=>User, (user)=>user.createdActivities, {nullable:true})
-    senderUser:User
+    @JoinColumn()
+    user:User
 
     @Column()
     title: string

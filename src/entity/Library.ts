@@ -12,7 +12,7 @@ export class Library extends EntityBasics {
     @Column({default: 'public'})
     visibility: string
 
-    @ManyToOne(()=>User,(user)=>user.libraries, {onDelete: "NO ACTION",eager:true})
+    @ManyToOne(()=>User,(user)=>user.libraries, {onDelete: "NO ACTION"})
     @JoinColumn()
     user: User
 
