@@ -4,25 +4,28 @@ import { ErrorResult } from "../utility/result/ErrorResult";
 import { SuccessResult } from "../utility/result/SuccessResult";
 import { UserRepository } from "../repository/UserRepository";
 import { LibraryRepository } from "../repository/LibraryRepository";
+import { SuccessDataResult } from "../utility/result/SuccessDataResult";
+import { Adress } from "../entity/Adress";
 
 export class AdressService {
     private adressRepository = new AdressRepository()
-    private userRepository = new UserRepository();
-    private libraryRepository = new LibraryRepository()
+    private userRepository = new UserRepository()
 
     async findAll(req: Request, res: Response, next: NextFunction) {
-        return this.adressRepository.find()
+        const adresses = await this.adressRepository.find()
+        return new SuccessDataResult<Array<Adress>>(adresses)
     }
 
     async add(req: Request, res: Response, next: NextFunction) {
-        return await this.adressRepository.save(req.body)
+        const adress = await this.adressRepository.save(req.body)
+        return new SuccessDataResult<Adress>(adress)
     }
 
     async findById(req: Request, res: Response, next: NextFunction) {
 
         const adress = await this.adressRepository.findById(req.params.id, req.query)
 
-        return adress ? adress : new ErrorResult("adress couldn't found")
+        return adress ? new SuccessDataResult<Adress>(adress) : new ErrorResult("adress couldn't found")
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
@@ -45,7 +48,7 @@ export class AdressService {
             errors.push(`user with id: ${userId} does not exist. adress have to belong to an user`)
         }
 
-        return !errors.length ? await this.adressRepository.update(newAdress) :  new ErrorResult(errors.toString())
+        return !errors.length ? new SuccessDataResult<Adress>(await this.adressRepository.update(newAdress))  :  new ErrorResult(errors.toString())
     }
 
     async delete(req: Request, res: Response, next: NextFunction) {

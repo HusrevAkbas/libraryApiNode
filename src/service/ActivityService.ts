@@ -2,25 +2,28 @@ import { Request, Response, NextFunction } from "express";
 import { ActivityRepository } from "../repository/ActivityRepository";
 import { ErrorResult } from "../utility/result/ErrorResult";
 import { SuccessResult } from "../utility/result/SuccessResult";
+import { SuccessDataResult } from "../utility/result/SuccessDataResult";
+import { Activity } from "../entity/Activity";
 
 export class ActivityService {
     private activityRepository = new ActivityRepository()
 
     async findAll(req: Request, res: Response, next: NextFunction){
-        return await this.activityRepository.find()
+        const activities = await this.activityRepository.find()
+        return new SuccessDataResult<Array<Activity>>(activities)
     }
 
     async findById(req: Request, res: Response, next: NextFunction){
         const {id} = req.params
         const activity = await this.activityRepository.findById(id, req.query)
-        return activity ? activity : new ErrorResult("activity does not exist")
+        return activity ? new SuccessDataResult<Activity>(activity)  : new ErrorResult("activity does not exist")
     }
 
     async add(req: Request, res: Response, next: NextFunction){
         const activity = req.body
         let act = this.activityRepository.create(activity)
         act = await this.activityRepository.save(act)
-        return act ? act : new ErrorResult("activity could not saved")
+        return act ? new SuccessDataResult<Activity>(act)  : new ErrorResult("activity could not saved")
          
     }
 
@@ -28,7 +31,7 @@ export class ActivityService {
         const activity = req.body
         let act = await this.activityRepository.preload(activity)
         act = await this.activityRepository.save(act)
-        return act ? act : new ErrorResult("activity could not saved")
+        return act ? new SuccessDataResult<Activity>(act)  : new ErrorResult("activity could not saved")
          
     }
 

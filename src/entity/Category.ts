@@ -11,7 +11,7 @@ export class Category extends EntityBasics {
     @Column()
     description: string
 
-    @ManyToMany(()=>Book, (book)=>book.categories)
+    @ManyToMany(()=>Book, (book)=>book.categories, {nullable: true})
     @JoinTable()
     books: Book[]
 }

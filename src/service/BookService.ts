@@ -5,6 +5,8 @@ import { UserRepository } from "../repository/UserRepository";
 import { LibraryRepository } from "../repository/LibraryRepository";
 import { CategoryRepository } from "../repository/CategoryRepository";
 import { ErrorResult } from "../utility/result/ErrorResult";
+import { SuccessDataResult } from "../utility/result/SuccessDataResult";
+import { SuccessResult } from "../utility/result/SuccessResult";
 
 export class BookService {
 
@@ -14,9 +16,8 @@ export class BookService {
     private categoryController = new CategoryRepository()
 
     async findAll(req: Request, res: Response, next: NextFunction){
-        this.bookController.find().then(data=>{
-            res.send(data)
-        }).catch(err=>res.send(`error on getting book list: \n${err}`))
+        const books = await this.bookController.find()
+        return new SuccessDataResult<Array<Book>>(books)
     }
 
     async findById(req: Request, res: Response, next: NextFunction){
@@ -26,24 +27,17 @@ export class BookService {
 
         const book = await this.bookController.findById(bookId,query)
 
-        return book ? book : new ErrorResult('book does not exist')
+        return book ? new SuccessDataResult<Book>(book)  : new ErrorResult('book does not exist')
     }    
 
     async addBook(req: Request, res: Response, next: NextFunction){
         const book: Book = req.body
         const errors = []
 
-        //find user by id and assign book.user
-        const userId = book.user.id
-        await this.userController.findById(userId).then(user=>{
-            user ? book.user = user : errors.push(`user with id: ${userId} does not exist. book have to belong to an user`)
-        }).catch(err=>errors.push(`error on getting user:\n${err}`))
-
         //find library by id and assign book.library
         const libraryId = book.library.id
-        await this.libraryController.findById(libraryId).then(lib=>{
-            lib ? book.library = lib : errors.push(`library with id: ${libraryId} does not exist. book have to belong to a library`)
-        }).catch(err=>errors.push(`error on getting library:\n${err}`))
+        const library = await this.libraryController.findById(libraryId)
+        if(!library) return new ErrorResult("library does not exist. please add library info")
 
         //find categories and assign book.categories 
         const categories = []
@@ -57,25 +51,18 @@ export class BookService {
 
         book.categories = categories
 
-        !errors.length ? 
-        this.bookController.add(book).then(data=>{
-            data ? res.send(data) : res.send("book could not added. Please try again")
-        }).catch(err=>res.send(`error occured on adding book:\n${err}`)) 
-        : res.send(errors)
+        return !errors.length ? 
+            new SuccessDataResult<Book>(await this.bookController.add(book))   
+            : new ErrorResult(errors.toString())
     }
 
     async update(req: Request, res: Response, next: NextFunction){
+
         const errors=[]
         
         const newBook = await this.bookController.preload(req.body)
 
-        if(!newBook) return {success: false, message: 'book does not exist'}
-        
-        //find user by id and assign book.user
-        const userId = req.body.user.id
-        await this.userController.findById(userId).then(user=>{
-            user ? newBook.user = user : errors.push(`user with id: ${userId} does not exist. book have to belong to an user`)
-        }).catch(err=>errors.push(`error on getting user:\n${err}`))
+        if(!newBook) return new ErrorResult("book does not exist")
 
         //find library by id and assign book.library
         const libraryId = req.body.library.id
@@ -95,24 +82,18 @@ export class BookService {
 
         newBook.categories = categories
 
-        console.log(newBook)
         await this.bookController.update(newBook)
 
-        !errors.length ? this.bookController.findById(newBook.id).then(data=>{
-            data ? res.send(data) : errors.push(`updated book with ${newBook.id} does not exist`)
-        }).catch(err=> `error occured on book update:\n${err}`) : res.send(errors)
+        !errors.length ? new SuccessDataResult(await this.bookController.findById(newBook.id)) : new ErrorResult(errors.toString())
     }
 
     async delete(req: Request, res: Response, next: NextFunction){
         const bookId = req.params.id
 
-        let bookToRemove: Book;
+        const bookToRemove: Book = await this.bookController.findById(bookId)
 
-        await this.bookController.findById(bookId).then(data=>{
-            data ? bookToRemove = data : res.send(`book with id: ${bookId} does not exist`)
-        }).catch(err=>res.send(`error occured on deleting book\n${err}`))
-        this.bookController.remove(bookToRemove).then(data=>{
-            data ? res.send(data) : res.send(`book with id ${bookId}`)
-        }).catch(err=>`error on removing book\n${err}`)
+        if(!bookToRemove) return new ErrorResult(`book does not exist`)
+        const deletedBook = await this.bookController.remove(bookToRemove)
+        return new SuccessResult(`${deletedBook.name} deleted`)
     }
 }

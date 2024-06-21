@@ -18,13 +18,6 @@ export class BookRepository {
         })    
     }
 
-    findByUserId(userId:string, relations?:any){
-        return this.bookRepository.findOne({
-            where: {user: {id: userId}},
-            relations: relations
-        })
-    }
-
     add(book:Book){
         return this.bookRepository.save(book)
     }
