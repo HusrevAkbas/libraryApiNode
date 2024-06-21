@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToMany } from "typeorm"
+import { Entity, Column, ManyToMany, JoinTable } from "typeorm"
 import { Book } from "./Book"
 import { EntityBasics } from "./Entity"
 
@@ -12,5 +12,6 @@ export class Category extends EntityBasics {
     description: string
 
     @ManyToMany(()=>Book, (book)=>book.categories)
+    @JoinTable()
     books: Book[]
 }

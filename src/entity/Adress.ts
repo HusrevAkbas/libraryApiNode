@@ -6,7 +6,8 @@ import { User } from "./User";
 @Entity()
 export class Adress extends EntityBasics {
 
-    @ManyToOne(()=>User, (user)=>user.adresses,{nullable:true})
+    @OneToOne(()=>User, (user)=>user.adress,{nullable:true})
+    @JoinColumn()
     user :User
 
     @OneToOne(()=>Library, (library)=> library.adress)

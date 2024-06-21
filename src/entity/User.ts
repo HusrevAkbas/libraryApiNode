@@ -1,4 +1,4 @@
-import { Entity, Column, TableInheritance, OneToMany, BeforeInsert, ManyToMany, Tree } from "typeorm"
+import { Entity, Column, TableInheritance, OneToMany, BeforeInsert, ManyToMany, Tree, OneToOne } from "typeorm"
 import { Library } from "./Library"
 import { Shelfitem } from "./Shelfitem"
 import * as bcrypt from "bcrypt"
@@ -28,13 +28,10 @@ export class User extends EntityBasics {
     @OneToMany(()=>Library, (library)=>library.user,{nullable: true})
     libraries: Library[]
 
-    @OneToMany(()=>Shelfitem, (shelfitem)=>shelfitem.user,{nullable:true})
-    shelfitems: Shelfitem[]
+    @OneToOne(()=>Adress, (adress)=>adress.user,{nullable:true})
+    adress: Adress
 
-    @OneToMany(()=>Adress, (adress)=>adress.user,{nullable:true})
-    adresses: Adress[]
-
-    @OneToMany(()=>Activity,(act)=>act.senderUser,{nullable:true})
+    @OneToMany(()=>Activity,(act)=>act.user,{nullable:true})
     createdActivities: Activity []
 
     @ManyToMany(()=>Activity, (activity)=>activity.participants,{nullable:true})

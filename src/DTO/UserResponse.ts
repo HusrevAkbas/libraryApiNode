@@ -11,7 +11,7 @@ export class UserResponse {
     imgUrl: string
     role: string
     libraries?: Array<Library>
-    adresses?: Array<Adress>
+    adress?: Adress
     shelfitems?: Array<Shelfitem>
     createdActivities?: Array<Activity>
     participatedActivities?: Array<Activity>
@@ -23,8 +23,7 @@ export class UserResponse {
         this.imgUrl = user.imgUrl
         this.role = user.role
         this.libraries = user.libraries
-        this.shelfitems = user.shelfitems
-        this.adresses = user.adresses
+        this.adress = user.adress
         this.createdActivities = user.createdActivities
         this.participatedActivities = user.participatedActivities
     }

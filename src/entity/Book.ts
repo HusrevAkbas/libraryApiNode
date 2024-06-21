@@ -20,7 +20,6 @@ export class Book extends Shelfitem {
     pages: number
 
     @ManyToMany(()=>Category,(category)=>category.books,{cascade:true})
-    @JoinTable()
     categories: Category[]
 
     @Column()
