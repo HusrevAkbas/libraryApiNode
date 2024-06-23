@@ -15,6 +15,7 @@ export class UserResponse {
     shelfitems?: Array<Shelfitem>
     createdActivities?: Array<Activity>
     participatedActivities?: Array<Activity>
+    type: string
 
     constructor(user?:User){
         this.username = user.username
@@ -26,5 +27,6 @@ export class UserResponse {
         this.adress = user.adress
         this.createdActivities = user.createdActivities
         this.participatedActivities = user.participatedActivities
+        this.type = user.type
     }
 }

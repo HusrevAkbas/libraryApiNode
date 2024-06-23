@@ -10,4 +10,7 @@ export class Shelfitem extends EntityBasics {
     @ManyToOne(()=>Library,{nullable: true, onDelete: "NO ACTION"})
     @JoinColumn()
     library: Library
+
+    @Column()
+    type: string
 }

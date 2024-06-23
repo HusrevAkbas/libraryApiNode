@@ -29,6 +29,8 @@ export class UserService {
 
         const user = await this.userRepository.findById(id,relations)
 
+        console.log(user)
+
         return user ? new SuccessDataResult(new UserResponse(user)) : new ErrorResult(`user does not exist`) 
     }
 

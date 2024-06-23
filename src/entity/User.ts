@@ -1,6 +1,5 @@
 import { Entity, Column, TableInheritance, OneToMany, BeforeInsert, ManyToMany, Tree, OneToOne } from "typeorm"
 import { Library } from "./Library"
-import { Shelfitem } from "./Shelfitem"
 import * as bcrypt from "bcrypt"
 import { EntityBasics } from "./Entity"
 import { Adress } from "./Adress"
@@ -36,6 +35,9 @@ export class User extends EntityBasics {
 
     @ManyToMany(()=>Activity, (activity)=>activity.participants,{nullable:true})
     participatedActivities: Activity []
+
+    @Column()
+    type: string
 
     @BeforeInsert()
     async hashPassword (){

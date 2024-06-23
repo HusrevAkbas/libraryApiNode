@@ -27,4 +27,7 @@ export class Book extends Shelfitem {
 
     @Column()
     isbn13: string
+
+    @Column({nullable:true})
+    info: string
 }
