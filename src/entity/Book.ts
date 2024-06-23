@@ -30,4 +30,7 @@ export class Book extends Shelfitem {
 
     @Column({nullable:true})
     info: string
+
+    @Column()
+    type: "Book"
 }
