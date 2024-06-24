@@ -3,6 +3,8 @@ import { adressRoutes } from "./routes/AdressRoutes"
 import { bookRoutes } from "./routes/BookRoutes"
 import { categoryRoutes } from "./routes/CategoryRoutes"
 import { libraryRoutes } from "./routes/LibraryRoutes"
+import { puzzleRoutes } from "./routes/PuzzleRoutes"
+import { shelfitemRoutes } from "./routes/ShelfitemRoutes"
 import { userRoutes } from "./routes/UserRoutes"
 import { ImageService } from "./service/ImageService"
 import { MainService } from "./service/MainService"
@@ -12,14 +14,22 @@ export const Routes = [{
     route: "/urlpathlist",
     controller: MainService,
     action: "urlpathlist"
-},{
+}, {
     method: "get",
     route: "/shemas",
     controller: MainService,
     action: "entityAllProperties"
-},{
+}, {
     method: "post",
     route: "/uploadimage",
     controller: ImageService,
     action: "add"
-}, ...userRoutes, ...categoryRoutes, ...libraryRoutes, ...bookRoutes, ...adressRoutes,...activityRoutes]
+},
+...userRoutes,
+...categoryRoutes,
+...libraryRoutes,
+...bookRoutes,
+...adressRoutes,
+...activityRoutes,
+...puzzleRoutes,
+...shelfitemRoutes]

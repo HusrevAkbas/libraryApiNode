@@ -4,8 +4,6 @@ import { Category } from "./Category"
 
 @ChildEntity()
 export class Book extends Shelfitem {
-    @Column()
-    name: string
 
     @Column()
     author: string
@@ -31,6 +29,6 @@ export class Book extends Shelfitem {
     @Column({nullable:true})
     info: string
 
-    @Column()
+    @Column({default: 'Book'})
     type: "Book"
 }

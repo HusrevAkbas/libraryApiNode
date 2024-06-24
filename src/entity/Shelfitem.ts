@@ -12,5 +12,5 @@ export class Shelfitem extends EntityBasics {
     library: Library
 
     @Column()
-    type: string
+    name: string
 }

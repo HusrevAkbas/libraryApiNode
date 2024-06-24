@@ -8,6 +8,7 @@ import { Book } from "./entity/Book"
 import { Shelfitem } from "./entity/Shelfitem"
 import { Adress } from "./entity/Adress"
 import { Activity } from "./entity/Activity"
+import { Puzzle } from "./entity/Puzzle"
 require("dotenv").config()
 
 export const AppDataSource = new DataSource({
@@ -19,7 +20,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_DATABASE,
     synchronize: true,
     logging: false,
-    entities: [User, Category, PersonalUser, Library, Book, Shelfitem, Adress, Activity],
+    entities: [User, Category, PersonalUser, Library, Book, Shelfitem, Adress, Activity, Puzzle],
     migrations: [],
     subscribers: [],
 })

@@ -1,6 +1,5 @@
 import { AppDataSource } from "../data-source";
 import { Book } from "../entity/Book";
-import { Category } from "../entity/Category";
 
 export class BookRepository {
     constructor(){}
@@ -8,7 +7,7 @@ export class BookRepository {
     private bookRepository = AppDataSource.getRepository(Book)
 
     find() {
-        return this.bookRepository.find({relations:{categories:true}});
+        return this.bookRepository.find();
     }
 
     findById(id:string, relations?: any) {
