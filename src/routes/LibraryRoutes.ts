@@ -23,7 +23,7 @@ export const libraryRoutes = [
         action: "delete"
     }, {
         method: "put",
-        route: "/libraries/:id",
+        route: "/libraries",
         controller: LibraryService,
         action: "update"
     }, {

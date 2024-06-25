@@ -50,8 +50,11 @@ export class LibraryService {
     async update(req:Request, res:Response, next: NextFunction){
 
         //check if library exists
-        const id = req.body.id
-        const library = await this.libraryController.preload(id)
+        const body = await this.libraryController.findById(req.body.id)
+        if(!body) return new ErrorResult('library does not exist')
+            
+        const library = await this.libraryController.preload(req.body)
+        console.log(body)
 
         if(!library) return new ErrorResult("library does not exist")
 
