@@ -25,5 +25,10 @@ export const activityRoutes = [{
         route: "/activities",
         controller: ActivityService,
         action: "update"
+    }, {
+        method: "get",
+        route: "/activities/q/find",
+        controller: ActivityService,
+        action: "findBy"
     }
 ]

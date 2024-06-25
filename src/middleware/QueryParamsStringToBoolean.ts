@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 const stringToBoolean = (req:Request,res: Response ,next: NextFunction) => {
     if(req.query){
         const queryString = JSON.stringify(req.query)
-        const queryBoolean = queryString.replace(/"true"/g,'true').replace(/"false"/g,'false')
+        const queryBoolean = queryString.replace(/"true"/g,'true').replace(/"false"/g,'false').replace(/"null"/,'null')
 
         req.query = JSON.parse(queryBoolean)
     }

@@ -9,7 +9,7 @@ export class ActivityService {
     private activityRepository = new ActivityRepository()
 
     async findAll(req: Request, res: Response, next: NextFunction){
-        const activities = await this.activityRepository.find()
+        const activities = await this.activityRepository.findAll()
         return new SuccessDataResult<Array<Activity>>(activities)
     }
 
@@ -17,6 +17,12 @@ export class ActivityService {
         const {id} = req.params
         const activity = await this.activityRepository.findById(id, req.query)
         return activity ? new SuccessDataResult<Activity>(activity)  : new ErrorResult("activity does not exist")
+    }
+
+    async findBy(req: Request, res: Response, next: NextFunction){
+        console.log(req.query)
+        const activity = await this.activityRepository.findBy(req.query)
+        return activity ? new SuccessDataResult<Array<Activity>>(activity)  : new ErrorResult("activity does not exist")
     }
 
     async add(req: Request, res: Response, next: NextFunction){

@@ -8,7 +8,7 @@ export class ActivityRepository {
         return this.adressRepository.create(activity)
     }
 
-    find() {
+    findAll() {
         return this.adressRepository.find();
     }
 
@@ -24,6 +24,13 @@ export class ActivityRepository {
             where: {user: {id:userId}},
             relations: relations
         })
+    }
+
+    findBy(where :Object, relations? :Object) {
+        return this.adressRepository.find({
+            where: where,
+            relations: relations
+        })    
     }
 
     save(activity :Activity){
