@@ -3,7 +3,6 @@ import { LibraryRepository } from "../repository/LibraryRepository";
 import { UserRepository } from "../repository/UserRepository";
 import { ErrorResult } from "../utility/result/ErrorResult";
 import { Library } from "../entity/Library";
-import { LibraryResponse } from "../DTO/LibraryResponse";
 import { SuccessDataResult } from "../utility/result/SuccessDataResult";
 
 export class LibraryService {
@@ -23,7 +22,7 @@ export class LibraryService {
 
         const library :Library = await this.libraryController.findById(id,relations)
 
-        return library ? new LibraryResponse(library)  : new ErrorResult('library does not exist')
+        return library ? new SuccessDataResult<Library>(library)  : new ErrorResult('library does not exist')
     }
 
     async findByUserId(req:Request, res:Response, next: NextFunction){
@@ -49,12 +48,8 @@ export class LibraryService {
 
     async update(req:Request, res:Response, next: NextFunction){
 
-        //check if library exists
-        const body = await this.libraryController.findById(req.body.id)
-        if(!body) return new ErrorResult('library does not exist')
-            
         const library = await this.libraryController.preload(req.body)
-        console.log(body)
+        console.log(library)
 
         if(!library) return new ErrorResult("library does not exist")
 

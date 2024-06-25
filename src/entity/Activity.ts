@@ -5,7 +5,7 @@ import { Column, ManyToMany, JoinTable, ManyToOne, Entity, JoinColumn } from "ty
 @Entity()
 export class Activity extends EntityBasics {
 
-    @ManyToOne(()=>User, (user)=>user.createdActivities, {nullable:true})
+    @ManyToOne(()=>User, (user)=>user.createdActivities)
     @JoinColumn()
     user:User
 

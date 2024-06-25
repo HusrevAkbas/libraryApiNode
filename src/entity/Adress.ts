@@ -10,7 +10,7 @@ export class Adress extends EntityBasics {
     @JoinColumn()
     user :User
 
-    @OneToOne(()=>Library, (library)=> library.adress)
+    @OneToOne(()=>Library, (library)=> library.adress,{nullable:true})
     @JoinColumn()
     library :Library
 

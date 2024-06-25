@@ -30,7 +30,7 @@ export class AdressService {
     async update(req: Request, res: Response, next: NextFunction) {
         const errors = []
 
-        const adress = await this.adressRepository.findById(req.body.id,{user:true,library:true})
+        const adress = await this.adressRepository.findById(req.body.id)
 
         if (!adress) return new ErrorResult('adress does not exist')
 

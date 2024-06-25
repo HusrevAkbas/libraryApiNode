@@ -34,6 +34,12 @@ export class ActivityService {
     }
 
     async update(req: Request, res: Response, next: NextFunction){
+
+        if(!req.body.id) return new ErrorResult('id required')
+
+        const isActivity = this.activityRepository.findById(req.body.id)
+        if(!isActivity) return new ErrorResult('Activity does not exist')
+            
         const activity = req.body
         let act = await this.activityRepository.preload(activity)
         act = await this.activityRepository.save(act)

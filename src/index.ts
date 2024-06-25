@@ -14,6 +14,7 @@ AppDataSource.initialize().then(async () => {
     const checkRequiredFormFields = require("./middleware/CheckRequired")
     const multer = require('./middleware/FileParser')
     const stringToBoolean = require('./middleware/QueryParamsStringToBoolean')
+    const userResponseHandler = require('./middleware/UserResponseHandler')
 
     app.use(cors())
     app.use(bodyParser.json())
@@ -30,6 +31,10 @@ AppDataSource.initialize().then(async () => {
     Routes.forEach(route => {
         (app as any)[route.method](route.route, asyncHandler(async (req: Request, res: Response, next: Function) => {
             const result = await (new (route.controller as any))[route.action](req, res, next)
+
+            //remove sensible data from user
+            userResponseHandler(result)
+
             if (result instanceof Promise) {
                 result.then(result => result !== null && result !== undefined ? res.send(result) : undefined)
 
@@ -38,7 +43,6 @@ AppDataSource.initialize().then(async () => {
             }
         }))
     })
-
 
     app.use(errorHandler)
     // setup express app here
