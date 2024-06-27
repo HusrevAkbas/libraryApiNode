@@ -1,6 +1,7 @@
 import { getMetadataArgsStorage } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Routes } from "../routes";
+import { Request, Response, NextFunction } from "express";
 
 export class MainService {
     urlpathlist() {
@@ -8,7 +9,7 @@ export class MainService {
     }
 
     //get entity properties from metadata
-    entityAllProperties() {
+    entityAllProperties(req: Request, res: Response, next: NextFunction) {
 
         const metadata = AppDataSource.entityMetadatas
 

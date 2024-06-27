@@ -8,7 +8,6 @@ import { PuzzleRepository } from "../repository/PuzzleRepository";
 
 export class PuzzleService {
     private puzzleRepository = new PuzzleRepository()
-    private userRepository = new UserRepository()
 
     async findAll(req: Request, res: Response, next: NextFunction) {
         const puzzles = await this.puzzleRepository.find()
@@ -16,7 +15,7 @@ export class PuzzleService {
     }
 
     async add(req: Request, res: Response, next: NextFunction) {
-        const puzzle = await this.puzzleRepository.save(req.body)
+        const puzzle :Puzzle = await this.puzzleRepository.save(req.body)
         return new SuccessDataResult<Puzzle>(puzzle)
     }
 
@@ -43,9 +42,9 @@ export class PuzzleService {
 
     async delete(req: Request, res: Response, next: NextFunction) {
 
-        const adressId = req.params.id
+        const {id} = req.params
 
-        const puzzle = await this.puzzleRepository.findById(adressId)
+        const puzzle = await this.puzzleRepository.findById(id)
         if (!puzzle) return new ErrorResult("puzzle couldn't found")
 
         const deletedAdress = await this.puzzleRepository.remove(puzzle)

@@ -8,7 +8,7 @@ export class Puzzle extends Shelfitem {
     pieces: number
 
     @Column({nullable: true})
-    ageGroup: number
+    ageGroup: string
 
     @Column({nullable:true})
     info: string
