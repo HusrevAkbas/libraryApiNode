@@ -27,6 +27,15 @@ export class BookService {
 
         return book ? new SuccessDataResult<Book>(book)  : new ErrorResult('book does not exist')
     }    
+    
+    async findBy(req: Request, res: Response, next: NextFunction){
+
+        const query = req.query
+
+        const book = await this.bookRepository.findBy(query)
+
+        return book ? new SuccessDataResult<Array<Book>>(book)  : new ErrorResult('book does not exist')
+    }    
 
     async addBook(req: Request, res: Response, next: NextFunction){
         const book: Book = req.body

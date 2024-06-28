@@ -17,6 +17,13 @@ export class ShelfitemRepository {
         })    
     }
 
+    findBy(where: any, relations?: any) {
+        return this.shelfitemRepository.find({
+            where: where,
+            relations: relations
+        })    
+    }
+
     remove(shelfitem:Shelfitem){
         return this.shelfitemRepository.remove(shelfitem)
     }

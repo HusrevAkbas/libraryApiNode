@@ -51,5 +51,10 @@ export const userRoutes = [
         route: "/showheaders",
         controller: UserService,
         action: "showHeaders"
+    }, {
+        method: "get",
+        route: "/users/q/find",
+        controller: UserService,
+        action: "findBy"
     }
 ]

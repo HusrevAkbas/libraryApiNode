@@ -15,5 +15,10 @@ export const shelfitemRoutes = [{
         route: "/shelfitems/:id",
         controller: ShelfitemService,
         action: "delete"
+    }, {
+        method: "get",
+        route: "/shelfitems/q/find",
+        controller: ShelfitemService,
+        action: "findBy"
     }
 ]

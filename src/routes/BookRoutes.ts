@@ -25,6 +25,9 @@ export const bookRoutes = [{
     route: "/books/:id",
     controller: BookService,
     action: "update"
-}
-
-]
+}, {
+    method: "get",
+    route: "/books/q/find",
+    controller: BookService,
+    action: "findBy"
+}]

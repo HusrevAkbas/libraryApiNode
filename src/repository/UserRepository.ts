@@ -19,6 +19,13 @@ export class UserRepository {
         })
     }
 
+    findBy(where: any,relations?:any) {
+        return this.userRepository.find({
+            where: where,
+            relations: relations
+        })
+    }
+
     findByUsername(username: string) {
         return this.userRepository.findOne({
             where: { username }

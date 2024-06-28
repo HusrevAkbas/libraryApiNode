@@ -28,9 +28,19 @@ export class UserService {
 
         const user = await this.userRepository.findById(id,relations)
 
-        console.log(user)
-
         return user ? new SuccessDataResult(new UserResponse(user)) : new ErrorResult(`user does not exist`) 
+    }
+
+    async findBy(req: Request, res:Response, next: NextFunction){
+        
+        const query = req.query
+
+        const user = await this.userRepository.findBy(query)
+        const userResponse = user.map(user=>{
+            return new UserResponse(user)
+        })
+
+        return user ? new SuccessDataResult<Array<UserResponse>>(userResponse) : new ErrorResult(`user does not exist`) 
     }
 
     async findByUsername(req: Request, res:Response, next: NextFunction){       

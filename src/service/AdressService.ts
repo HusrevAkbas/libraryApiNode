@@ -27,6 +27,13 @@ export class AdressService {
         return adress ? new SuccessDataResult<Adress>(adress) : new ErrorResult("adress couldn't found")
     }
 
+    async findBy(req: Request, res: Response, next: NextFunction) {
+
+        const adress = await this.adressRepository.findBy(req.query)
+
+        return adress ? new SuccessDataResult<Array<Adress>>(adress) : new ErrorResult("adress couldn't found")
+    }
+
     async update(req: Request, res: Response, next: NextFunction) {
         const errors = []
 

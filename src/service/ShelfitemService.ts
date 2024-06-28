@@ -19,9 +19,18 @@ export class ShelfitemService {
         const bookId = req.params.id
         const query = req.query
 
-        const book = await this.shelfitemRepository.findById(bookId,query)
+        const item = await this.shelfitemRepository.findById(bookId,query)
 
-        return book ? new SuccessDataResult<Shelfitem>(book)  : new ErrorResult('item does not exist')
+        return item ? new SuccessDataResult<Shelfitem>(item)  : new ErrorResult('item does not exist')
+    }
+
+    async findBy(req: Request, res: Response, next: NextFunction){
+
+        const query = req.query
+
+        const item = await this.shelfitemRepository.findBy(query)
+
+        return item ? new SuccessDataResult<Array<Shelfitem>>(item)  : new ErrorResult('item does not exist')
     }
 
     async delete(req: Request, res: Response, next: NextFunction){
@@ -29,7 +38,7 @@ export class ShelfitemService {
 
         const toRemove: Shelfitem = await this.shelfitemRepository.findById(itemId)
 
-        if(!toRemove) return new ErrorResult(`book does not exist`)
+        if(!toRemove) return new ErrorResult(`item does not exist`)
         const deletedBook = await this.shelfitemRepository.remove(toRemove)
         return new SuccessResult(`${deletedBook.name} deleted`)
     }

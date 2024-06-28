@@ -25,5 +25,10 @@ export const puzzleRoutes = [{
         route: "/puzzles",
         controller: PuzzleService,
         action: "update"
+    }, {
+        method: "get",
+        route: "/puzzles/q/find",
+        controller: PuzzleService,
+        action: "findBy"
     }
 ]

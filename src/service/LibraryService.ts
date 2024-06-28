@@ -25,6 +25,15 @@ export class LibraryService {
         return library ? new SuccessDataResult<Library>(library)  : new ErrorResult('library does not exist')
     }
 
+    async findBy(req:Request, res:Response, next: NextFunction){
+
+        const {query} = req
+
+        const library :Library[] = await this.libraryController.findBy(query)
+
+        return library ? new SuccessDataResult<Array<Library>>(library)  : new ErrorResult('library does not exist')
+    }
+
     async findByUserId(req:Request, res:Response, next: NextFunction){
         const id = req.params.id
         const library = await this.libraryController.findByUserId(id)

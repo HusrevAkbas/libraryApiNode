@@ -1,3 +1,4 @@
+import { FindOptionsWhere, Relation, RelationOptions } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Puzzle } from "../entity/Puzzle";
 
@@ -13,6 +14,13 @@ export class PuzzleRepository {
     findById(id:string, relations?: any) {
         return this.puzzleRepository.findOne({
             where: {id},
+            relations: relations
+        })    
+    }
+
+    findBy(where: FindOptionsWhere<Puzzle>, relations?: any) {
+        return this.puzzleRepository.find({
+            where: where,
             relations: relations
         })    
     }

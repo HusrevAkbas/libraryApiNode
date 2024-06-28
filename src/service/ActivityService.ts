@@ -22,7 +22,7 @@ export class ActivityService {
     async findBy(req: Request, res: Response, next: NextFunction){
         console.log(req.query)
         const activity = await this.activityRepository.findBy(req.query)
-        return activity ? new SuccessDataResult<Array<Activity>>(activity)  : new ErrorResult("activity does not exist")
+        return activity ? new SuccessDataResult<Array<Activity>>(activity) : new ErrorResult("activity does not exist")
     }
 
     async add(req: Request, res: Response, next: NextFunction){

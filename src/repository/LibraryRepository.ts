@@ -16,6 +16,13 @@ export class LibraryRepository {
         })
     }
 
+    findBy(where:any, relations?:any) {
+        return this.libraryRepository.find({
+            where: where,
+            relations: relations
+        })
+    }
+
     findByUserId(id: string){
         return this.libraryRepository.find({
             where: {user:{id}}

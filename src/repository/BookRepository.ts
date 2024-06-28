@@ -17,6 +17,13 @@ export class BookRepository {
         })    
     }
 
+    findBy(where: any, relations?: any) {
+        return this.bookRepository.find({
+            where: where,
+            relations: relations
+        })    
+    }
+
     add(book:Book){
         return this.bookRepository.save(book)
     }

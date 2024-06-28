@@ -24,6 +24,14 @@ export class CategoryService {
         return category ? new SuccessDataResult<Category>(category)  : new ErrorResult(`Category does not exist`)
     }
 
+    async findBy(req: Request, res: Response, next: NextFunction) {
+        
+        const query = req.query
+
+        const category = await this.categoryController.findBy(query)
+        return category ? new SuccessDataResult<Array<Category>>(category)  : new ErrorResult(`Category does not exist`)
+    }
+
     async update(req: Request, res: Response, next: NextFunction) {
 
         const categoryToChange = await this.categoryController.preload(req.body)

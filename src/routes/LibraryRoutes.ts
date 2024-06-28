@@ -31,5 +31,10 @@ export const libraryRoutes = [
         route: "/libraries/user/:id",
         controller: LibraryService,
         action: "findByUserId"
+    }, {
+        method: "get",
+        route: "/libraries/q/find",
+        controller: LibraryService,
+        action: "findBy"
     }
 ]

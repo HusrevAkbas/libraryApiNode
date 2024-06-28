@@ -26,5 +26,10 @@ export const categoryRoutes = [
         route: "/categories/:id",
         controller: CategoryService,
         action: "update"
+    }, {
+        method: "get",
+        route: "/categories/q/find",
+        controller: CategoryService,
+        action: "findBy"
     }
 ]

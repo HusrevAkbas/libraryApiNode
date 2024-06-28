@@ -18,6 +18,14 @@ export class AdressRepository {
             relations: relations
         })    
     }
+
+    findBy(where:any,relations?:any) {
+        console.log(where)
+        return this.adressRepository.find({
+            where: where,
+            relations: relations
+        })    
+    }
     
     findByUserId(userId: string, relations? :any){
         return this.adressRepository.findOne({

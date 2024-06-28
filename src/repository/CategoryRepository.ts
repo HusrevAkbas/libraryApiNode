@@ -16,6 +16,13 @@ export class CategoryRepository{
         })
     }
 
+    findBy(where: any, relations?:any) {
+        return this.categoryRepository.find({
+            where: where,
+            relations: relations
+        })
+    }
+
     add(category: Category) {
         return this.categoryRepository.save(category)
     }

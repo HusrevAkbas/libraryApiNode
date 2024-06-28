@@ -25,5 +25,10 @@ export const adressRoutes = [{
         route: "/adresses",
         controller: AdressService,
         action: "update"
+    }, {
+        method: "get",
+        route: "/adresses/q/find",
+        controller: AdressService,
+        action: "findBy"
     }
 ]

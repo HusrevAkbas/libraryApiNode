@@ -26,6 +26,13 @@ export class PuzzleService {
         return puzzle ? new SuccessDataResult<Puzzle>(puzzle) : new ErrorResult("puzzle couldn't found")
     }
 
+    async findBy(req: Request, res: Response, next: NextFunction) {
+
+        const puzzle = await this.puzzleRepository.findBy(req.query)
+
+        return puzzle ? new SuccessDataResult<Array<Puzzle>>(puzzle) : new ErrorResult("puzzle couldn't found")
+    }
+
     async update(req: Request, res: Response, next: NextFunction) {
         const errors = []
 
